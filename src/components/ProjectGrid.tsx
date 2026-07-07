@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { featuredProjects, moreProjects } from "../data/projects";
 import type { Project } from "../data/projects";
 import SectionFrame from "./SectionFrame";
@@ -21,19 +22,65 @@ const projectVisuals: Record<string, string> = {
   ).href,
 };
 
+const moreCardBackground = new URL(
+  "../assets/projects/more-card-bg.png",
+  import.meta.url,
+).href;
+
+const moreProjectIcons: Record<string, string> = {
+  writeups: new URL("../assets/projects/more-writeups.svg", import.meta.url)
+    .href,
+  "Road to CWES": new URL(
+    "../assets/projects/more-road-cwes.svg",
+    import.meta.url,
+  ).href,
+  "pwgen-lite": new URL(
+    "../assets/projects/more-pwgen-lite.svg",
+    import.meta.url,
+  ).href,
+  mfind: new URL("../assets/projects/more-mfind.svg", import.meta.url).href,
+  blue: new URL("../assets/projects/more-blue.svg", import.meta.url).href,
+  FixDesk: new URL("../assets/projects/more-fixdesk.svg", import.meta.url)
+    .href,
+};
+
+const fixDeskProject: Project = {
+  title: "FixDesk",
+  description:
+    "Internal repair shop management frontend built with React and TypeScript.",
+  tags: ["React", "TypeScript", "Frontend"],
+};
+
 type ProjectCardProps = {
   project: Project;
   compact?: boolean;
   visualSrc?: string;
+  archiveLayer?: "front" | "behind";
 };
 
-function ProjectCard({ project, compact, visualSrc }: ProjectCardProps) {
+function ProjectCard({
+  project,
+  compact,
+  visualSrc,
+  archiveLayer,
+}: ProjectCardProps) {
+  const archiveIcon = compact ? moreProjectIcons[project.title] : null;
+  const archiveStyle = compact
+    ? ({
+        "--archive-card-bg": `url(${moreCardBackground})`,
+      } as CSSProperties & { "--archive-card-bg": string })
+    : undefined;
+
   return (
     <article
+      style={archiveStyle}
+      tabIndex={archiveLayer === "behind" ? 0 : undefined}
       className={[
         "project-card",
         visualSrc && "project-card--featured",
+        compact && "project-card--archive",
         compact && "project-card--compact",
+        archiveLayer && `project-card--archive-${archiveLayer}`,
       ]
         .filter(Boolean)
         .join(" ")}
@@ -41,6 +88,17 @@ function ProjectCard({ project, compact, visualSrc }: ProjectCardProps) {
       {visualSrc ? (
         <div className="project-card__visual" aria-hidden="true">
           <img src={visualSrc} alt="" loading="lazy" />
+        </div>
+      ) : null}
+      {archiveIcon ? (
+        <div className="project-card__archive-visual" aria-hidden="true">
+          <img
+            className="project-card__archive-icon"
+            src={archiveIcon}
+            alt=""
+            loading="lazy"
+          />
+          <span className="project-card__archive-status" />
         </div>
       ) : null}
       <div className="project-card__content">
@@ -60,6 +118,19 @@ function ProjectCard({ project, compact, visualSrc }: ProjectCardProps) {
         </ul>
       </div>
     </article>
+  );
+}
+
+function ArchiveStack({ project }: { project: Project }) {
+  return (
+    <div
+      className="archive-stack"
+      tabIndex={0}
+      aria-label="blue project with hidden FixDesk archive card"
+    >
+      <ProjectCard project={fixDeskProject} compact archiveLayer="behind" />
+      <ProjectCard project={project} compact archiveLayer="front" />
+    </div>
   );
 }
 
@@ -97,13 +168,20 @@ function ProjectGrid() {
         className="project-group project-group--more"
         aria-label="More projects"
       >
+        <div className="project-group__ghost" aria-hidden="true">
+          MORE PROJECTS
+        </div>
         <div className="project-group__heading">
           <h3>More projects</h3>
-          <span>working set</span>
+          <span>archive set</span>
         </div>
         <div className="project-grid project-grid--compact">
           {moreProjects.map((project) => (
-            <ProjectCard key={project.title} project={project} compact />
+            project.title === "blue" ? (
+              <ArchiveStack key={project.title} project={project} />
+            ) : (
+              <ProjectCard key={project.title} project={project} compact />
+            )
           ))}
         </div>
       </div>
