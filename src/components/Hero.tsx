@@ -1,3 +1,10 @@
+const ornamentAssets = {
+  moon: new URL("../assets/ornaments/moon-dripping-white.png", import.meta.url)
+    .href,
+  moth: new URL("../assets/ornaments/moth-skull-purple.png", import.meta.url)
+    .href,
+};
+
 const terminalLines = [
   "> just enumerating quietly...",
   "> break things to understand why they’re exploitable.",
@@ -45,10 +52,21 @@ function Hero() {
       </div>
 
       <div className="hero__decor" aria-hidden="true">
-        <div className="moon-placeholder" />
-        <div className="moth-placeholder">
-          <span />
+        <div className="cyber-mesh" aria-hidden="true">
+          <div className="cyber-mesh__grid" />
         </div>
+        <img
+          className="hero-ornament hero-ornament--moon"
+          src={ornamentAssets.moon}
+          alt=""
+          aria-hidden="true"
+        />
+        <img
+          className="hero-ornament hero-ornament--moth"
+          src={ornamentAssets.moth}
+          alt=""
+          aria-hidden="true"
+        />
       </div>
     </section>
   );
