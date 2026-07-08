@@ -7459,3 +7459,345 @@ body::before {
     animation: none !important;
   }
 }
+
+/* Project link patch: make repository cards visibly clickable without changing layout. */
+.project-card[href] {
+  cursor: pointer;
+}
+
+.project-card[href]:focus-visible {
+  outline: 1px solid rgba(244, 240, 255, 0.72);
+  outline-offset: 0.28rem;
+}
+
+.project-card__link-cue {
+  position: absolute;
+  right: 0.95rem;
+  bottom: 0.85rem;
+  z-index: 3;
+  border: 1px solid rgba(157, 77, 255, 0.42);
+  padding: 0.22rem 0.42rem;
+  color: rgba(244, 240, 255, 0.64);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  line-height: 1;
+  text-transform: uppercase;
+  background: rgba(5, 2, 9, 0.82);
+  opacity: 0.72;
+  pointer-events: none;
+  transition:
+    border-color var(--transition),
+    color var(--transition),
+    opacity var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
+}
+
+.project-card--featured .project-card__link-cue {
+  right: 1rem;
+  bottom: 1rem;
+  font-size: 0.68rem;
+}
+
+.project-card--archive .project-card__link-cue {
+  right: 0.9rem;
+  bottom: 0.72rem;
+  padding: 0.18rem 0.34rem;
+  font-size: 0.54rem;
+  opacity: 0.56;
+}
+
+.project-card[href]:hover .project-card__link-cue,
+.project-card[href]:focus-visible .project-card__link-cue {
+  border-color: rgba(244, 240, 255, 0.62);
+  color: var(--color-accent);
+  opacity: 1;
+  box-shadow: 0 0 12px rgba(157, 77, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.archive-stack .project-card--archive-front .project-card__link-cue,
+.archive-stack .project-card--archive-behind .project-card__link-cue {
+  bottom: 0.76rem;
+  font-size: 0.52rem;
+}
+
+@media (max-width: 680px) {
+  .project-card__link-cue {
+    right: 0.85rem;
+    bottom: 0.75rem;
+  }
+
+  .project-card--archive .project-card__link-cue {
+    font-size: 0.56rem;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Project link cleanup + bridge readability pass.
+   -------------------------------------------------------------------------- */
+.project-card__link-cue {
+  display: none !important;
+}
+
+.project-card[href] {
+  cursor: pointer;
+}
+
+.project-card[href] .project-card__header h3::after {
+  color: rgba(192, 140, 255, 0.72);
+  content: " ↗";
+  font-family: var(--font-mono);
+  font-size: 0.72em;
+  font-weight: 700;
+  opacity: 0;
+  transition:
+    opacity var(--transition),
+    color var(--transition);
+}
+
+.project-card[href]:hover .project-card__header h3::after,
+.project-card[href]:focus-visible .project-card__header h3::after {
+  color: rgba(244, 240, 255, 0.9);
+  opacity: 1;
+}
+
+.project-card[href]:focus-visible {
+  outline: 1px solid rgba(244, 240, 255, 0.7);
+  outline-offset: 0.24rem;
+}
+
+/* Keep section command bridges readable. They are dividers, not title banners. */
+.section-bridge {
+  min-height: 2.9rem !important;
+  gap: clamp(0.38rem, 0.75vw, 0.7rem) !important;
+  margin: clamp(1.25rem, 2.6vw, 2rem) auto clamp(0.55rem, 1.25vw, 0.95rem) !important;
+  padding: 0.32rem 0 !important;
+  font-size: clamp(0.66rem, 0.78vw, 0.82rem) !important;
+  letter-spacing: 0.035em !important;
+  line-height: 1.35 !important;
+}
+
+.section-bridge::before,
+.section-bridge::after {
+  min-width: clamp(1.75rem, 4vw, 4.8rem) !important;
+  max-width: clamp(4.5rem, 11vw, 11rem) !important;
+  opacity: 0.62 !important;
+}
+
+.section-bridge__index {
+  width: 1.85rem !important;
+  height: 1.85rem !important;
+  font-size: 0.58rem !important;
+  line-height: 1 !important;
+  box-shadow:
+    3px 3px 0 rgba(157, 77, 255, 0.1),
+    0 0 10px rgba(157, 77, 255, 0.08) !important;
+}
+
+.section-bridge__prompt,
+.section-bridge__command,
+.section-bridge__result {
+  line-height: 1.35 !important;
+}
+
+.section-bridge__prompt {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+  max-width: clamp(12rem, 28vw, 26rem) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.section-bridge__command {
+  flex: 0 0 auto !important;
+  max-width: var(--section-bridge-command-width) !important;
+  font-weight: 800 !important;
+}
+
+.section-bridge__result {
+  flex: 1 1 auto !important;
+  min-width: 8ch !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  transform: translateX(-0.18rem) !important;
+}
+
+@keyframes section-bridge-result {
+  from {
+    opacity: 0;
+    transform: translateX(-0.18rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 980px) {
+  .section-bridge {
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    row-gap: 0.28rem !important;
+  }
+
+  .section-bridge::before,
+  .section-bridge::after {
+    max-width: 3rem !important;
+  }
+
+  .section-bridge__prompt {
+    max-width: calc(100% - 3rem) !important;
+  }
+
+  .section-bridge__command,
+  .section-bridge__result {
+    font-size: 0.74rem !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .section-bridge {
+    min-height: 2.75rem !important;
+    font-size: 0.68rem !important;
+  }
+
+  .section-bridge__index {
+    width: 1.65rem !important;
+    height: 1.65rem !important;
+    font-size: 0.52rem !important;
+  }
+
+  .section-bridge__prompt {
+    flex-basis: calc(100% - 2.2rem) !important;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Header companion pass: moth home link + path-style nav.
+   -------------------------------------------------------------------------- */
+.site-header {
+  align-items: center !important;
+  padding: clamp(0.85rem, 1.5vw, 1.1rem) 0 !important;
+}
+
+.brand-mark,
+.brand-mark--moth {
+  display: inline-flex !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  border: 0 !important;
+  padding: 0.25rem 0.1rem !important;
+  color: rgba(192, 140, 255, 0.82) !important;
+  font-family: var(--font-mono) !important;
+  font-size: clamp(0.9rem, 1.15vw, 1.18rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 0 10px rgba(157, 77, 255, 0.18));
+  transform-origin: center;
+  transition:
+    color var(--transition),
+    filter var(--transition),
+    opacity var(--transition),
+    transform var(--transition);
+}
+
+.brand-mark--moth span {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.brand-mark--moth:hover,
+.brand-mark--moth:focus-visible {
+  color: var(--color-accent) !important;
+  filter:
+    drop-shadow(0 0 10px rgba(244, 240, 255, 0.24))
+    drop-shadow(0 0 22px rgba(157, 77, 255, 0.4));
+  transform: translateY(-1px) rotate(-1deg);
+}
+
+.site-nav {
+  gap: clamp(0.65rem, 1.5vw, 1.25rem) !important;
+  font-size: clamp(0.72rem, 0.95vw, 0.86rem) !important;
+  letter-spacing: 0.06em;
+}
+
+.site-nav a {
+  position: relative;
+  border: 0 !important;
+  padding: 0.35rem 0 !important;
+  color: rgba(244, 240, 255, 0.72) !important;
+  text-transform: none !important;
+  background: transparent !important;
+  transition:
+    color var(--transition),
+    text-shadow var(--transition),
+    opacity var(--transition),
+    transform var(--transition);
+}
+
+.site-nav a::before {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(192, 140, 255, 0.88), transparent);
+  content: "";
+  opacity: 0;
+  transform: scaleX(0.2);
+  transition:
+    opacity var(--transition),
+    transform var(--transition);
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  color: var(--color-purple-soft) !important;
+  text-shadow:
+    0 0 10px rgba(157, 77, 255, 0.35),
+    0 0 18px rgba(244, 240, 255, 0.08);
+  background: transparent !important;
+  transform: translateY(-1px);
+}
+
+.site-nav a:hover::before,
+.site-nav a:focus-visible::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+@media (max-width: 680px) {
+  .site-header {
+    align-items: center !important;
+    gap: 1rem !important;
+  }
+
+  .brand-mark--moth {
+    max-width: 8rem;
+    overflow: hidden;
+    font-size: 0.9rem !important;
+    mask-image: linear-gradient(90deg, black 0 78%, transparent 100%);
+  }
+
+  .site-nav {
+    max-width: none !important;
+    gap: 0.58rem !important;
+    font-size: 0.66rem !important;
+  }
+
+  .site-nav a {
+    padding: 0.3rem 0 !important;
+  }
+}

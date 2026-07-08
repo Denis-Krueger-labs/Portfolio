@@ -6,10 +6,10 @@ import ProjectGrid from "./components/ProjectGrid";
 import StackSection from "./components/StackSection";
 
 const navItems = [
-  { href: "#focus", label: "Focus" },
-  { href: "#projects", label: "Projects" },
-  { href: "#stack", label: "Stack" },
-  { href: "#contact", label: "Contact" },
+  { href: "#focus", label: "~/focus" },
+  { href: "#projects", label: "~/projects" },
+  { href: "#stack", label: "~/stack" },
+  { href: "#contact", label: "~/contact" },
 ];
 
 const timelineItems = [
@@ -90,7 +90,7 @@ function SectionBridge({
       <span className="section-bridge__index" aria-hidden="true">
         {index}
       </span>
-      <span className="section-bridge__prompt">denis@portfolio:{path}$</span>
+      <span className="section-bridge__prompt">jessy@portfolio:{path}$</span>
       <code className="section-bridge__command">{command}</code>
       <span className="section-bridge__result">{result}</span>
     </div>
@@ -194,8 +194,13 @@ function App() {
       <SectionTimeline />
 
       <header className="site-header">
-        <a className="brand-mark" href="#top" aria-label="Denis Krüger home">
-          DK
+        <a
+          className="brand-mark brand-mark--moth"
+          href="#top"
+          aria-label="Moth companion, back to top"
+          title="back to top"
+        >
+          <span aria-hidden="true">࿔‧ ֶָ֢˚˖𐦍˖˚ֶָ֢ ‧࿔</span>
         </a>
         <nav className="site-nav" aria-label="Primary navigation">
           {navItems.map((item) => (

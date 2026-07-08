@@ -6,7 +6,7 @@ const ornamentAssets = {
 };
 
 const terminalLines = [
-  "> just enumerating quietly...",
+  "> just enumerating quietly... ᓚ₍⑅^..^₎♡",
   "> break things to understand why they’re exploitable.",
   "> find the root cause, and build better, more secure systems.",
   "> offense to learn. defense to protect.",

@@ -129,7 +129,7 @@ function ProjectCard({
         href={project.href}
         aria-label={`Open ${project.title} project`}
         target={external ? "_blank" : undefined}
-        rel={external ? "noreferrer" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
       >
         {content}
       </a>
