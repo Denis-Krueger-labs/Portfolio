@@ -1,25 +1,31 @@
+import { useEffect, useRef, useState } from "react";
 import SectionFrame from "./SectionFrame";
+import wantedPoster from "../assets/contact/wanted-contact-poster.png";
 
 const contactLinks = [
   {
+    key: "github",
     label: "GitHub",
     value: "Denis-Krueger-labs",
     href: "https://github.com/Denis-Krueger-labs",
-    ariaLabel: "Visit Denis Krüger on GitHub",
+    ariaLabel: "Open GitHub profile for Denis-Krueger-labs",
   },
   {
+    key: "linkedin",
     label: "LinkedIn",
-    value: "denis-krueger-80521b31b",
-    href: "https://linkedin.com/in/denis-krueger-80521b31b",
-    ariaLabel: "Visit Denis Krüger on LinkedIn",
+    value: "Denis-Krüger",
+    href: "https://www.linkedin.com/in/denis-kr%C3%BCger-882520354",
+    ariaLabel: "Open LinkedIn profile for Denis Krüger",
   },
   {
+    key: "email",
     label: "Email",
-    value: "denis.krueger@thws-student.de",
-    href: "mailto:denis.krueger@thws-student.de",
-    ariaLabel: "Email Denis Krüger",
+    value: "denis.krueger@study.thws.de",
+    href: "mailto:denis.krueger@study.thws.de",
+    ariaLabel: "Send an email to Denis Krüger",
   },
   {
+    key: "location",
     label: "Location",
     value: "Würzburg, Germany",
     href: "https://www.openstreetmap.org/search?query=W%C3%BCrzburg%2C%20Germany",
@@ -28,31 +34,83 @@ const contactLinks = [
 ];
 
 function ContactSection() {
+  const printerRef = useRef<HTMLDivElement | null>(null);
+  const [isPrinted, setIsPrinted] = useState(false);
+
+  useEffect(() => {
+    const printerElement = printerRef.current;
+
+    if (!printerElement) {
+      return;
+    }
+
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (motionQuery.matches) {
+      setIsPrinted(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsPrinted(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.26,
+        rootMargin: "0px 0px -12% 0px",
+      },
+    );
+
+    observer.observe(printerElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <>
       <SectionFrame
         id="contact"
-        label="contact --open-channel"
+        className="contact-section contact-section--printer"
+        label="contact -- open-channel"
         title="Contact"
         intro="Open to internships, security research, collaboration, and good conversations about systems and security."
       >
-        <div className="contact-panel">
-          <div>
-            <p className="terminal-label">status</p>
-            <p className="contact-panel__status">
-              available for thoughtful security work and practical learning
-            </p>
+        <div
+          className={`contact-printer${isPrinted ? " is-printed" : ""}`}
+          ref={printerRef}
+        >
+          <div className="contact-printer__head" aria-hidden="true">
+            <p className="contact-printer__kicker">classified output queue</p>
+            <div className="contact-printer__slot">
+              <span>printing wanted notice</span>
+            </div>
           </div>
-          <ul className="contact-list" aria-label="Contact links">
-            {contactLinks.map((link) => (
-              <li key={link.label}>
-                <span>{link.label}</span>
-                <a href={link.href} aria-label={link.ariaLabel}>
-                  {link.value}
+
+          <div className="contact-printer__paper-stage">
+            <figure className="contact-poster">
+              <img
+                src={wantedPoster}
+                alt="Wanted contact dossier for a security student available for practical field work. The poster contains routes for GitHub, LinkedIn, email, and location."
+              />
+
+              {contactLinks.map((link) => (
+                <a
+                  className={`contact-hotspot contact-hotspot--${link.key}`}
+                  href={link.href}
+                  key={link.key}
+                  aria-label={link.ariaLabel}
+                  data-label={`Open ${link.label}`}
+                >
+                  <span>{`${link.label}: ${link.value}`}</span>
                 </a>
-              </li>
-            ))}
-          </ul>
+              ))}
+            </figure>
+          </div>
         </div>
       </SectionFrame>
 
