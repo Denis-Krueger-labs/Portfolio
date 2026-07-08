@@ -6344,3 +6344,1118 @@ svg {
     letter-spacing: 0.16em;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Timeline polish: bigger numbered nodes + a subtle archive-spine backdrop.
+   -------------------------------------------------------------------------- */
+.section-timeline {
+  isolation: isolate;
+  gap: 1.12rem;
+  padding: 1.55rem 1.3rem 1.55rem 0.95rem;
+}
+
+.section-timeline::before {
+  position: absolute;
+  inset: 0.05rem -0.9rem 0.05rem -0.85rem;
+  z-index: -2;
+  border-left: 1px solid rgba(157, 77, 255, 0.22);
+  background:
+    linear-gradient(90deg, rgba(157, 77, 255, 0.12), rgba(5, 2, 9, 0.54) 38%, transparent 100%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(244, 240, 255, 0.035) 0 1px,
+      transparent 1px 17px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(157, 77, 255, 0.04) 0 1px,
+      transparent 1px 22px
+    );
+  box-shadow:
+    inset 18px 0 28px rgba(157, 77, 255, 0.08),
+    0 0 34px rgba(157, 77, 255, 0.08);
+  content: "";
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+.section-timeline::after {
+  position: absolute;
+  top: 0.45rem;
+  bottom: 0.45rem;
+  left: 1.45rem;
+  z-index: -1;
+  width: 5.4rem;
+  background: radial-gradient(ellipse at center, rgba(157, 77, 255, 0.13), transparent 68%);
+  content: "";
+  filter: blur(14px);
+  opacity: 0.78;
+  pointer-events: none;
+}
+
+.section-timeline__rail {
+  left: 1.28rem;
+  width: 1px;
+}
+
+.section-timeline__link {
+  grid-template-columns: 2.65rem auto;
+  gap: 0.96rem;
+  min-width: 12.5rem;
+}
+
+.section-timeline__link::before {
+  left: 0.56rem;
+  width: 1.42rem;
+  height: 1.42rem;
+  border: 1px solid rgba(192, 140, 255, 0.86);
+  background:
+    linear-gradient(135deg, rgba(157, 77, 255, 0.3), rgba(5, 2, 9, 0.95) 68%),
+    rgba(5, 2, 9, 0.96);
+  box-shadow:
+    0 0 18px rgba(157, 77, 255, 0.34),
+    inset 0 0 12px rgba(157, 77, 255, 0.16);
+}
+
+.section-timeline__index {
+  width: 2.65rem;
+  color: rgba(232, 214, 255, 0.96);
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-shadow:
+    0 0 8px rgba(157, 77, 255, 0.46),
+    0 0 16px rgba(157, 77, 255, 0.18);
+}
+
+.section-timeline__label {
+  max-width: 9.8rem;
+  color: rgba(244, 240, 255, 0.74);
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+}
+
+.section-timeline__link:hover::before,
+.section-timeline__link:focus-visible::before {
+  background:
+    linear-gradient(135deg, rgba(192, 140, 255, 0.42), rgba(17, 7, 26, 0.95) 70%),
+    rgba(8, 3, 13, 0.98);
+  box-shadow:
+    0 0 20px rgba(157, 77, 255, 0.54),
+    0 0 36px rgba(244, 240, 255, 0.12),
+    inset 0 0 14px rgba(157, 77, 255, 0.22);
+}
+
+@media (max-width: 1460px) {
+  .section-timeline {
+    padding-right: 0.95rem;
+  }
+
+  .section-timeline__link {
+    min-width: 11.4rem;
+  }
+
+  .section-timeline__label,
+  .section-timeline__link:hover .section-timeline__label,
+  .section-timeline__link:focus-visible .section-timeline__label {
+    max-width: 8.8rem;
+  }
+}
+
+@media (max-width: 1260px) {
+  .section-timeline {
+    padding-right: 0.55rem;
+  }
+
+  .section-timeline::before {
+    inset-right: -0.35rem;
+    background:
+      linear-gradient(90deg, rgba(157, 77, 255, 0.12), rgba(5, 2, 9, 0.48) 58%, transparent),
+      repeating-linear-gradient(0deg, rgba(244, 240, 255, 0.03) 0 1px, transparent 1px 17px);
+  }
+
+  .section-timeline__link {
+    grid-template-columns: 2.65rem auto;
+    min-width: 2.65rem;
+  }
+
+  .section-timeline__label {
+    max-width: 0;
+    opacity: 0;
+  }
+
+  .section-timeline__link:hover .section-timeline__label,
+  .section-timeline__link:focus-visible .section-timeline__label {
+    max-width: 8.8rem;
+    opacity: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Timeline spine alignment patch: give the nodes breathing room and keep the
+   rail centered through the diamonds instead of drifting into the backdrop.
+   -------------------------------------------------------------------------- */
+.section-timeline {
+  --timeline-node-size: 3.05rem;
+  --timeline-diamond-size: 2.05rem;
+
+  gap: clamp(1.65rem, 3.2vh, 2.25rem);
+  padding: 1.75rem 1.35rem 1.75rem 0.95rem;
+}
+
+.section-timeline::before {
+  border-left: 0;
+  background:
+    linear-gradient(90deg, rgba(157, 77, 255, 0.1), rgba(5, 2, 9, 0.46) 42%, transparent 100%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(244, 240, 255, 0.026) 0 1px,
+      transparent 1px 20px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(157, 77, 255, 0.032) 0 1px,
+      transparent 1px 24px
+    );
+}
+
+.section-timeline::after {
+  left: calc(0.95rem + (var(--timeline-node-size) / 2) - 2.7rem);
+  width: 5.4rem;
+}
+
+.section-timeline__rail {
+  top: 1.85rem;
+  bottom: 1.85rem;
+  left: calc(0.95rem + (var(--timeline-node-size) / 2));
+  z-index: -1;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(157, 77, 255, 0.34) 10%,
+    rgba(192, 140, 255, 0.72) 50%,
+    rgba(157, 77, 255, 0.3) 90%,
+    transparent
+  );
+}
+
+.section-timeline__link {
+  grid-template-columns: var(--timeline-node-size) auto;
+  gap: 1.05rem;
+  min-width: 13rem;
+}
+
+.section-timeline__link::before {
+  left: calc((var(--timeline-node-size) - var(--timeline-diamond-size)) / 2);
+  width: var(--timeline-diamond-size);
+  height: var(--timeline-diamond-size);
+}
+
+.section-timeline__index {
+  width: var(--timeline-node-size);
+  font-size: 1.02rem;
+  line-height: var(--timeline-node-size);
+}
+
+.section-timeline__label {
+  font-size: 0.92rem;
+}
+
+@media (max-width: 1460px) {
+  .section-timeline {
+    --timeline-node-size: 2.9rem;
+    --timeline-diamond-size: 1.94rem;
+    gap: clamp(1.45rem, 3vh, 2rem);
+    padding-right: 0.95rem;
+  }
+
+  .section-timeline__link {
+    min-width: 12rem;
+  }
+}
+
+@media (max-width: 1260px) {
+  .section-timeline {
+    --timeline-node-size: 2.75rem;
+    --timeline-diamond-size: 1.84rem;
+    gap: 1.25rem;
+  }
+
+  .section-timeline__link {
+    min-width: var(--timeline-node-size);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Global atmosphere patch: remove the isolated timeline panel backdrop and
+   make the whole page background feel like one continuous dark archive surface.
+   -------------------------------------------------------------------------- */
+body {
+  background:
+    radial-gradient(circle at 9% -7%, rgba(157, 77, 255, 0.34), transparent 24rem),
+    radial-gradient(circle at 84% 8%, rgba(244, 240, 255, 0.08), transparent 21rem),
+    radial-gradient(circle at 50% 58%, rgba(74, 20, 122, 0.18), transparent 34rem),
+    linear-gradient(180deg, #020006 0%, #050209 34%, #020006 68%, #050209 100%);
+}
+
+body::before {
+  background:
+    linear-gradient(112deg, transparent 0 58%, rgba(157, 77, 255, 0.05) 58.15% 58.45%, transparent 58.7%),
+    linear-gradient(72deg, transparent 0 66%, rgba(244, 240, 255, 0.035) 66.1% 66.35%, transparent 66.62%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(244, 240, 255, 0.026) 0,
+      rgba(244, 240, 255, 0.026) 1px,
+      transparent 1px,
+      transparent 52px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(157, 77, 255, 0.04) 0,
+      rgba(157, 77, 255, 0.04) 1px,
+      transparent 1px,
+      transparent 52px
+    ),
+    radial-gradient(ellipse at 24% 32%, rgba(157, 77, 255, 0.1), transparent 34rem),
+    radial-gradient(ellipse at 78% 74%, rgba(157, 77, 255, 0.075), transparent 32rem);
+  background-size:
+    96rem 56rem,
+    82rem 50rem,
+    52px 52px,
+    52px 52px,
+    cover,
+    cover;
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.9),
+    rgba(0, 0, 0, 0.82) 36%,
+    rgba(0, 0, 0, 0.7) 72%,
+    rgba(0, 0, 0, 0.3)
+  );
+  opacity: 0.78;
+}
+
+body::after {
+  background:
+    radial-gradient(circle at 5% 18%, rgba(157, 77, 255, 0.14), transparent 18rem),
+    radial-gradient(circle at 95% 42%, rgba(157, 77, 255, 0.1), transparent 20rem),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.032) 0,
+      rgba(255, 255, 255, 0.032) 1px,
+      transparent 1px,
+      transparent 6px
+    ),
+    linear-gradient(90deg, rgba(2, 0, 6, 0.74), transparent 18%, transparent 82%, rgba(2, 0, 6, 0.68));
+  opacity: 0.62;
+}
+
+/* The timeline should sit on the global atmosphere, not on its own random slab. */
+.section-timeline::before {
+  background: transparent;
+  box-shadow: none;
+  opacity: 0;
+}
+
+.section-timeline::after {
+  left: calc(0.95rem + (var(--timeline-node-size) / 2) - 2.25rem);
+  width: 4.5rem;
+  background: radial-gradient(ellipse at center, rgba(157, 77, 255, 0.16), transparent 72%);
+  filter: blur(16px);
+  opacity: 0.52;
+}
+
+.section-timeline__rail {
+  z-index: -1;
+  box-shadow:
+    0 0 12px rgba(157, 77, 255, 0.36),
+    0 0 24px rgba(157, 77, 255, 0.12);
+}
+
+
+/* --------------------------------------------------------------------------
+   Global background concept patch: ghost lab artifacts + CRT scanlines +
+   sparse moth/sigil accents. This keeps the page one continuous surface,
+   but adds security-lab lore and tiny goth gremlin texture.
+   -------------------------------------------------------------------------- */
+body {
+  background:
+    radial-gradient(circle at 8% -8%, rgba(157, 77, 255, 0.32), transparent 25rem),
+    radial-gradient(circle at 92% 12%, rgba(244, 240, 255, 0.075), transparent 22rem),
+    radial-gradient(ellipse at 18% 46%, rgba(157, 77, 255, 0.12), transparent 34rem),
+    radial-gradient(ellipse at 78% 72%, rgba(74, 20, 122, 0.16), transparent 38rem),
+    linear-gradient(180deg, #020006 0%, #050209 32%, #020006 68%, #050209 100%);
+}
+
+body::before {
+  z-index: -2;
+  background:
+    linear-gradient(110deg, transparent 0 58%, rgba(157, 77, 255, 0.052) 58.1% 58.38%, transparent 58.62%),
+    linear-gradient(72deg, transparent 0 69%, rgba(244, 240, 255, 0.035) 69.05% 69.27%, transparent 69.5%),
+    repeating-linear-gradient(0deg, rgba(244, 240, 255, 0.024) 0 1px, transparent 1px 54px),
+    repeating-linear-gradient(90deg, rgba(157, 77, 255, 0.034) 0 1px, transparent 1px 54px),
+    radial-gradient(ellipse at 26% 28%, rgba(157, 77, 255, 0.095), transparent 36rem),
+    radial-gradient(ellipse at 82% 72%, rgba(192, 140, 255, 0.06), transparent 34rem);
+  background-size:
+    96rem 56rem,
+    82rem 50rem,
+    54px 54px,
+    54px 54px,
+    cover,
+    cover;
+  opacity: 0.72;
+}
+
+.app-shell::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  min-height: 100%;
+  pointer-events: none;
+  content: "";
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22900%22 viewBox=%220 0 1200 900%22%3E%0A  %3Cdefs%3E%0A    %3Cstyle%3E%0A      .mono%7Bfont-family:'JetBrains Mono','Fira Code','Consolas',monospace;font-size:20px;letter-spacing:1.4px;fill:#c08cff;opacity:.17%7D%0A      .tiny%7Bfont-family:'JetBrains Mono','Fira Code','Consolas',monospace;font-size:14px;letter-spacing:1.2px;fill:#f4f0ff;opacity:.10%7D%0A      .line%7Bstroke:#9d4dff;stroke-width:1;opacity:.11;fill:none%7D%0A      .node%7Bstroke:#c08cff;stroke-width:1;opacity:.18;fill:none%7D%0A      .sigil%7Bfont-family:'Times New Roman',serif;font-size:23px;fill:#c08cff;opacity:.18%7D%0A    %3C/style%3E%0A  %3C/defs%3E%0A  %3Cg transform=%22translate(70 70) rotate(-6)%22%3E%0A    %3Crect class=%22node%22 x=%220%22 y=%220%22 width=%22330%22 height=%22118%22/%3E%0A    %3Ctext class=%22mono%22 x=%2222%22 y=%2235%22%3Ecat ./focus%3C/text%3E%0A    %3Ctext class=%22tiny%22 x=%2222%22 y=%2267%22%3Estatus=active  ttl=04%3C/text%3E%0A    %3Ctext class=%22tiny%22 x=%2222%22 y=%2294%22%3Esha256: 7b6e...dossier%3C/text%3E%0A  %3C/g%3E%0A  %3Cg transform=%22translate(760 118) rotate(4)%22%3E%0A    %3Crect class=%22node%22 x=%220%22 y=%220%22 width=%22350%22 height=%22142%22/%3E%0A    %3Ctext class=%22mono%22 x=%2220%22 y=%2238%22%3Egrep -r evidence%3C/text%3E%0A    %3Ctext class=%22tiny%22 x=%2220%22 y=%2273%22%3E../projects/*.md%3C/text%3E%0A    %3Ctext class=%22tiny%22 x=%2220%22 y=%22105%22%3Ematches: decup wingftp llm%3C/text%3E%0A  %3C/g%3E%0A  %3Cg transform=%22translate(180 510) rotate(3)%22%3E%0A    %3Ctext class=%22mono%22 x=%220%22 y=%220%22%3Espool ./contact/wanted_notice.print%3C/text%3E%0A    %3Cpath class=%22line%22 d=%22M0 22 H470%22/%3E%0A    %3Ctext class=%22tiny%22 x=%220%22 y=%2254%22%3Equeue=classified_output  paper=loaded%3C/text%3E%0A  %3C/g%3E%0A  %3Cg transform=%22translate(775 620) rotate(-5)%22%3E%0A    %3Ctext class=%22mono%22 x=%220%22 y=%220%22%3EPATCH_NOTES.md%3C/text%3E%0A    %3Ctext class=%22tiny%22 x=%220%22 y=%2234%22%3E+ fixed cursed UI decisions%3C/text%3E%0A    %3Ctext class=%22tiny%22 x=%220%22 y=%2262%22%3Esession=end-of-file%3C/text%3E%0A  %3C/g%3E%0A  %3Cg transform=%22translate(500 318) rotate(-12)%22%3E%0A    %3Cpath class=%22line%22 d=%22M0 0 C90 55 165 -36 260 12 S420 72 520 12%22/%3E%0A    %3Ccircle class=%22node%22 cx=%220%22 cy=%220%22 r=%226%22/%3E%0A    %3Ccircle class=%22node%22 cx=%22260%22 cy=%2212%22 r=%226%22/%3E%0A    %3Ccircle class=%22node%22 cx=%22520%22 cy=%2212%22 r=%226%22/%3E%0A    %3Ctext class=%22tiny%22 x=%22118%22 y=%22-18%22%3Eroute -&gt; peer%3C/text%3E%0A  %3C/g%3E%0A  %3Ctext class=%22sigil%22 x=%22106%22 y=%22760%22%3E%E2%9C%A6  %E0%BD%90%E0%BD%B2%E2%8B%86%E2%99%B1%E2%8B%86%E0%BD%8B%E0%BE%80%3C/text%3E%0A  %3Ctext class=%22sigil%22 x=%221010%22 y=%22430%22%3E%E0%BD%90%E0%BD%B2%E2%8B%86%E2%99%B1%E2%8B%86%E0%BD%8B%E0%BE%80  %E2%9C%A7%3C/text%3E%0A  %3Ctext class=%22sigil%22 x=%22650%22 y=%22825%22%3E%E2%9C%A7 moth swarm: quiet%3C/text%3E%0A  %3Ctext class=%22tiny%22 x=%2258%22 y=%22365%22 transform=%22rotate(8 58 365)%22%3Enonce=0x7d3a%3C/text%3E%0A  %3Ctext class=%22tiny%22 x=%22920%22 y=%22815%22 transform=%22rotate(6 920 815)%22%3EOPEN_CHANNEL%3C/text%3E%0A%3C/svg%3E"),
+    radial-gradient(circle at 14% 22%, rgba(157, 77, 255, 0.12), transparent 18rem),
+    radial-gradient(circle at 88% 62%, rgba(192, 140, 255, 0.075), transparent 24rem);
+  background-repeat: repeat-y, no-repeat, no-repeat;
+  background-size: min(1180px, 96vw) auto, cover, cover;
+  background-position: 50% 2rem, center, center;
+  opacity: 0.7;
+  mix-blend-mode: screen;
+  filter: blur(0.05px);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.55) 8rem,
+    rgba(0, 0, 0, 0.82) 28rem,
+    rgba(0, 0, 0, 0.78) calc(100% - 18rem),
+    rgba(0, 0, 0, 0.25) 100%
+  );
+  animation: lab-artifact-drift 32s linear infinite alternate;
+}
+
+.app-shell::after {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  content: "";
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(244, 240, 255, 0.045) 0,
+      rgba(244, 240, 255, 0.045) 1px,
+      transparent 1px,
+      transparent 6px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(157, 77, 255, 0.018) 0,
+      rgba(157, 77, 255, 0.018) 1px,
+      transparent 1px,
+      transparent 5px
+    ),
+    radial-gradient(ellipse at center, transparent 58%, rgba(2, 0, 6, 0.42) 100%);
+  opacity: 0.13;
+  mix-blend-mode: screen;
+  animation: crt-breathe 7.5s steps(4, end) infinite;
+}
+
+.app-shell > .site-header,
+.app-shell > main {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes lab-artifact-drift {
+  from {
+    background-position: 50% 2rem, center, center;
+  }
+
+  to {
+    background-position: 50% 9rem, center, center;
+  }
+}
+
+@keyframes crt-breathe {
+  0%, 100% {
+    opacity: 0.11;
+    transform: translateY(0);
+  }
+
+  48% {
+    opacity: 0.15;
+    transform: translateY(0.5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell::before,
+  .app-shell::after {
+    animation: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .app-shell::before {
+    background-size: 980px auto, cover, cover;
+    opacity: 0.5;
+  }
+
+  .app-shell::after {
+    opacity: 0.1;
+  }
+}
+
+
+/* index_fix_30: make the global background actually visible, not imaginary. */
+body {
+  background:
+    radial-gradient(circle at 10% 8%, rgba(157, 77, 255, 0.28), transparent 24rem),
+    radial-gradient(circle at 86% 24%, rgba(192, 140, 255, 0.16), transparent 28rem),
+    radial-gradient(circle at 24% 72%, rgba(157, 77, 255, 0.12), transparent 26rem),
+    linear-gradient(180deg, #020006 0%, #05010a 46%, #020006 100%);
+}
+
+.app-shell::before {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  min-height: 100vh;
+  pointer-events: none;
+  content: "";
+  background:
+    url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%221600%22%20height%3D%221000%22%20viewBox%3D%220%200%201600%201000%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20.cmd%7Bfont-family%3A%27JetBrains%20Mono%27%2C%27Fira%20Code%27%2C%27Consolas%27%2Cmonospace%3Bfont-size%3A28px%3Bletter-spacing%3A2px%3Bfill%3A%23c08cff%3Bopacity%3A.34%7D%0A%20%20%20%20%20%20.tiny%7Bfont-family%3A%27JetBrains%20Mono%27%2C%27Fira%20Code%27%2C%27Consolas%27%2Cmonospace%3Bfont-size%3A18px%3Bletter-spacing%3A1.6px%3Bfill%3A%23f4f0ff%3Bopacity%3A.18%7D%0A%20%20%20%20%20%20.line%7Bstroke%3A%239d4dff%3Bstroke-width%3A1.2%3Bopacity%3A.22%3Bfill%3Anone%7D%0A%20%20%20%20%20%20.thin%7Bstroke%3A%23f4f0ff%3Bstroke-width%3A.8%3Bopacity%3A.12%3Bfill%3Anone%7D%0A%20%20%20%20%20%20.node%7Bstroke%3A%23c08cff%3Bstroke-width%3A1.4%3Bopacity%3A.26%3Bfill%3Anone%7D%0A%20%20%20%20%20%20.sigil%7Bfont-family%3A%27Times%20New%20Roman%27%2Cserif%3Bfont-size%3A32px%3Bfill%3A%23c08cff%3Bopacity%3A.28%7D%0A%20%20%20%20%3C/style%3E%0A%20%20%3C/defs%3E%0A%20%20%3Cg%20transform%3D%22translate%2890%2086%29%20rotate%28-6%29%22%3E%0A%20%20%20%20%3Crect%20class%3D%22node%22%20x%3D%220%22%20y%3D%220%22%20width%3D%22500%22%20height%3D%22210%22/%3E%0A%20%20%20%20%3Cpath%20class%3D%22line%22%20d%3D%22M34%2052%20H380%20M34%2098%20H455%20M34%20144%20H314%22/%3E%0A%20%20%20%20%3Ctext%20class%3D%22cmd%22%20x%3D%2228%22%20y%3D%2246%22%3Ecat%20./focus/llm-security.txt%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%2230%22%20y%3D%2291%22%3Esha256%3A%209d4dff%3Apayload.bin%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%2230%22%20y%3D%22136%22%3Ettl%3D04%20nonce%3D7f2a%20route%20-%26gt%3B%20peer%3C/text%3E%0A%20%20%20%20%3Ccircle%20class%3D%22node%22%20cx%3D%22420%22%20cy%3D%22158%22%20r%3D%2224%22/%3E%0A%20%20%20%20%3Cpath%20class%3D%22line%22%20d%3D%22M420%20134%20V72%20H488%22/%3E%0A%20%20%3C/g%3E%0A%20%20%3Cg%20transform%3D%22translate%281020%20110%29%20rotate%288%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22sigil%22%20x%3D%220%22%20y%3D%220%22%3E%E2%9C%A6%20%20%20%E0%BD%90%E0%BD%B2%E2%8B%86%E2%99%B1%E2%8B%86%E0%BD%8B%E0%BE%80%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%2238%22%20y%3D%2252%22%3Emoth%20swarm%3A%20quiet%3C/text%3E%0A%20%20%20%20%3Cpath%20class%3D%22thin%22%20d%3D%22M10%2072%20C120%2010%20220%2084%20315%2018%22/%3E%0A%20%20%3C/g%3E%0A%20%20%3Cg%20transform%3D%22translate%28750%20430%29%20rotate%285%29%22%3E%0A%20%20%20%20%3Crect%20class%3D%22node%22%20x%3D%220%22%20y%3D%220%22%20width%3D%22420%22%20height%3D%22180%22/%3E%0A%20%20%20%20%3Ctext%20class%3D%22cmd%22%20x%3D%2228%22%20y%3D%2255%22%3Egrep%20-r%20evidence%20./projects%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%2232%22%20y%3D%22103%22%3EOPEN_CHANNEL%20contact/wanted_notice.print%3C/text%3E%0A%20%20%20%20%3Cpath%20class%3D%22line%22%20d%3D%22M30%20130%20H390%20M68%20152%20H330%22/%3E%0A%20%20%3C/g%3E%0A%20%20%3Cg%20transform%3D%22translate%28135%20680%29%20rotate%28-4%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22sigil%22%20x%3D%220%22%20y%3D%220%22%3E%E1%93%9A%E2%82%8D%E2%91%85%5E..%5E%E2%82%8E%E2%99%A1%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%228%22%20y%3D%2246%22%3Ejust%20enumerating%20quietly%3C/text%3E%0A%20%20%20%20%3Cpath%20class%3D%22line%22%20d%3D%22M300%20-18%20H520%20M386%20-60%20V24%20M470%20-46%20V54%22/%3E%0A%20%20%20%20%3Ccircle%20class%3D%22node%22%20cx%3D%22585%22%20cy%3D%22-18%22%20r%3D%2218%22/%3E%0A%20%20%20%20%3Ccircle%20class%3D%22node%22%20cx%3D%22640%22%20cy%3D%2242%22%20r%3D%2212%22/%3E%0A%20%20%3C/g%3E%0A%20%20%3Cg%20transform%3D%22translate%281000%20760%29%20rotate%28-7%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cmd%22%20x%3D%220%22%20y%3D%220%22%3EPATCH_NOTES.md%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%224%22%20y%3D%2248%22%3E%2B%20fixed%20cursed%20UI%20decisions%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%224%22%20y%3D%2284%22%3Esession%3A%20end-of-file%3C/text%3E%0A%20%20%3C/g%3E%0A%3C/svg%3E"),
+    linear-gradient(rgba(157, 77, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(157, 77, 255, 0.06) 1px, transparent 1px),
+    radial-gradient(circle at 78% 18%, rgba(244, 240, 255, 0.09), transparent 19rem),
+    radial-gradient(circle at 12% 58%, rgba(157, 77, 255, 0.12), transparent 22rem);
+  background-repeat: repeat-y, repeat, repeat, no-repeat, no-repeat;
+  background-size: 1600px 1000px, 64px 64px, 64px 64px, cover, cover;
+  background-position: 50% 0, 0 0, 0 0, center, center;
+  opacity: 0.72;
+  mix-blend-mode: screen;
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.7) 0,
+    rgba(0, 0, 0, 0.9) 9rem,
+    rgba(0, 0, 0, 0.86) 86%,
+    rgba(0, 0, 0, 0.48) 100%
+  );
+  animation: lab-artifact-drift-visible 42s linear infinite alternate;
+}
+
+.app-shell::after {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  content: "";
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(244, 240, 255, 0.055) 0,
+      rgba(244, 240, 255, 0.055) 1px,
+      transparent 1px,
+      transparent 5px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(157, 77, 255, 0.028) 0,
+      rgba(157, 77, 255, 0.028) 1px,
+      transparent 1px,
+      transparent 7px
+    ),
+    radial-gradient(ellipse at center, transparent 58%, rgba(2, 0, 6, 0.42) 100%);
+  opacity: 0.18;
+  mix-blend-mode: screen;
+  animation: crt-breathe-visible 7s steps(4, end) infinite;
+}
+
+.app-shell > .site-header,
+.app-shell > main,
+.section-timeline {
+  position: relative;
+  z-index: 1;
+}
+
+.section-timeline {
+  z-index: 5;
+}
+
+@keyframes lab-artifact-drift-visible {
+  from {
+    background-position: 50% -2rem, 0 0, 0 0, center, center;
+  }
+
+  to {
+    background-position: 50% 10rem, 0 16px, 16px 0, center, center;
+  }
+}
+
+@keyframes crt-breathe-visible {
+  0%, 100% {
+    opacity: 0.15;
+    transform: translateY(0);
+  }
+
+  45% {
+    opacity: 0.22;
+    transform: translateY(0.5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell::before,
+  .app-shell::after {
+    animation: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .app-shell::before {
+    background-size: 1200px 750px, 56px 56px, 56px 56px, cover, cover;
+    opacity: 0.58;
+  }
+
+  .app-shell::after {
+    opacity: 0.13;
+  }
+}
+
+
+/* index_fix_31: replace the broken ghost-lab HUD layer with ASCII-only artifacts. */
+body {
+  background:
+    radial-gradient(circle at 10% 8%, rgba(157, 77, 255, 0.26), transparent 24rem),
+    radial-gradient(circle at 86% 24%, rgba(192, 140, 255, 0.12), transparent 28rem),
+    radial-gradient(circle at 20% 74%, rgba(157, 77, 255, 0.11), transparent 28rem),
+    linear-gradient(180deg, #020006 0%, #05010a 46%, #020006 100%);
+}
+
+body::before {
+  z-index: -2;
+  background:
+    repeating-linear-gradient(0deg, rgba(244, 240, 255, 0.02) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(90deg, rgba(157, 77, 255, 0.028) 0 1px, transparent 1px 56px),
+    radial-gradient(ellipse at 24% 26%, rgba(157, 77, 255, 0.08), transparent 34rem),
+    radial-gradient(ellipse at 80% 74%, rgba(192, 140, 255, 0.05), transparent 36rem);
+  background-size: 56px 56px, 56px 56px, cover, cover;
+  opacity: 0.72;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.72) 82%, rgba(0, 0, 0, 0.36));
+}
+
+/* Page-attached ASCII texture. No boxes drawn by SVG primitives, no HUD geometry, only text. */
+.app-shell::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  min-height: 100%;
+  pointer-events: none;
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221600%22%20height%3D%221200%22%20viewBox%3D%220%200%201600%201200%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20.a%7Bfont-family%3A%27JetBrains%20Mono%27%2C%27Fira%20Code%27%2C%27Consolas%27%2Cmonospace%3Bfont-size%3A24px%3Bletter-spacing%3A1.2px%3Bfill%3A%23c08cff%3Bopacity%3A.18%7D%0A%20%20%20%20%20%20.b%7Bfont-family%3A%27JetBrains%20Mono%27%2C%27Fira%20Code%27%2C%27Consolas%27%2Cmonospace%3Bfont-size%3A18px%3Bletter-spacing%3A1px%3Bfill%3A%23f4f0ff%3Bopacity%3A.095%7D%0A%20%20%20%20%20%20.c%7Bfont-family%3A%27JetBrains%20Mono%27%2C%27Fira%20Code%27%2C%27Consolas%27%2Cmonospace%3Bfont-size%3A20px%3Bletter-spacing%3A1.1px%3Bfill%3A%239d4dff%3Bopacity%3A.13%7D%0A%20%20%20%20%3C%2Fstyle%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Cg%20transform%3D%22translate%2892%2096%29%20rotate%28-5%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22a%22%20x%3D%220%22%20y%3D%220%22%3E%2B--------------------------------------%2B%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2230%22%3E%7C%20cat%20.%2Ffocus%2Fllm-security.txt%20%20%20%20%20%20%20%20%20%7C%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2260%22%3E%7C%20status%3Dactive%20%20ttl%3D04%20%20nonce%3D7f2a%20%20%20%20%7C%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2290%22%3E%7C%20tags%3A%20prompts%20%2F%20tools%20%2F%20defence%20%20%20%20%20%20%7C%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22a%22%20x%3D%220%22%20y%3D%22120%22%3E%2B--------------------------------------%2B%3C%2Ftext%3E%0A%20%20%3C%2Fg%3E%0A%20%20%3Cg%20transform%3D%22translate%28940%20138%29%20rotate%285%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22a%22%20x%3D%220%22%20y%3D%220%22%3E%24%20grep%20-r%20evidence%20.%2Fprojects%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%2222%22%20y%3D%2234%22%3E.%2Fdecup.md%3A%20signed_identity%3Dtrue%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%2222%22%20y%3D%2264%22%3E.%2Fwingftp.md%3A%20mitigation%3Dtested%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%2222%22%20y%3D%2294%22%3E.%2Fllm.md%3A%20boundary%3Dprompt_is_not_security%3C%2Ftext%3E%0A%20%20%3C%2Fg%3E%0A%20%20%3Cg%20transform%3D%22translate%28156%20420%29%20rotate%284%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22c%22%20x%3D%220%22%20y%3D%220%22%3E%2F%2A%20quiet%20moth%20process%20%2A%2F%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2234%22%3E%20%20%20%20%20%5C%5C%20%20%20%20%20%2F%2F%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2262%22%3E%20%20%20%20%20%20%5C%5C%20%20%20%2F%2F%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2290%22%3E%20%20%20%20---%20%28.%29%20---%20%20%20%20moth_swarm%3Dlow%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%22118%22%3E%20%20%20%20%20%20%2F%2F%20%20%20%5C%5C%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%22146%22%3E%20%20%20%20%20%2F%2F%20%20%20%20%20%5C%5C%3C%2Ftext%3E%0A%20%20%3C%2Fg%3E%0A%20%20%3Cg%20transform%3D%22translate%28870%20560%29%20rotate%28-4%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22a%22%20x%3D%220%22%20y%3D%220%22%3E%2B--%20route%20table%20-----------------------%2B%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2232%22%3E%7C%20peer%5B01%5D%20-%3E%20focus%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2262%22%3E%7C%20peer%5B02%5D%20-%3E%20projects%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2292%22%3E%7C%20peer%5B03%5D%20-%3E%20stack%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%22122%22%3E%7C%20peer%5B04%5D%20-%3E%20contact%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22a%22%20x%3D%220%22%20y%3D%22154%22%3E%2B--------------------------------------%2B%3C%2Ftext%3E%0A%20%20%3C%2Fg%3E%0A%20%20%3Cg%20transform%3D%22translate%2894%20780%29%20rotate%28-3%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22a%22%20x%3D%220%22%20y%3D%220%22%3E%24%20spool%20.%2Fcontact%2Fwanted_notice.print%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%2220%22%20y%3D%2236%22%3Equeue%3Dclassified_output%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%2220%22%20y%3D%2268%22%3Epaper%3Dloaded%20%20printer%3Dhaunted%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%2220%22%20y%3D%22100%22%3Estatus%3Dfeeding_line_by_line%3C%2Ftext%3E%0A%20%20%3C%2Fg%3E%0A%20%20%3Cg%20transform%3D%22translate%281000%20910%29%20rotate%286%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22a%22%20x%3D%220%22%20y%3D%220%22%3EPORTFOLIO_PATCH_NOTES.md%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2236%22%3E%2B%20fixed%20cursed%20UI%20decisions%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2266%22%3E%2B%20archived%20frontend%20experiments%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2296%22%3Esession%3Dend-of-file%3C%2Ftext%3E%0A%20%20%3C%2Fg%3E%0A%20%20%3Cg%20transform%3D%22translate%28560%201035%29%20rotate%28-7%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22c%22%20x%3D%220%22%20y%3D%220%22%3E%2B-------------------------------%2B%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2230%22%3E%7C%20%2001%20ROOT%20%20%2002%20FOCUS%20%20%20%20%20%20%20%20%20%20%20%7C%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22b%22%20x%3D%220%22%20y%3D%2260%22%3E%7C%20%2003%20PROJECTS%2004%20STACK%2005%20END%20%20%7C%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22c%22%20x%3D%220%22%20y%3D%2290%22%3E%2B-------------------------------%2B%3C%2Ftext%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E");
+  background-repeat: repeat-y;
+  background-size: min(1500px, 98vw) auto;
+  background-position: 50% 0;
+  opacity: 0.34;
+  mix-blend-mode: screen;
+  filter: blur(0.03px);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.52) 8rem,
+    rgba(0, 0, 0, 0.72) 28rem,
+    rgba(0, 0, 0, 0.68) calc(100% - 18rem),
+    rgba(0, 0, 0, 0.28) 100%
+  );
+  animation: ascii-background-drift 58s linear infinite alternate;
+}
+
+.app-shell::after {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  content: "";
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(244, 240, 255, 0.034) 0,
+      rgba(244, 240, 255, 0.034) 1px,
+      transparent 1px,
+      transparent 6px
+    ),
+    radial-gradient(ellipse at center, transparent 60%, rgba(2, 0, 6, 0.36) 100%);
+  opacity: 0.13;
+  mix-blend-mode: screen;
+  animation: ascii-crt-breathe 8s steps(4, end) infinite;
+}
+
+.app-shell > .site-header,
+.app-shell > main,
+.section-timeline {
+  position: relative;
+  z-index: 1;
+}
+
+.section-timeline {
+  z-index: 5;
+}
+
+@keyframes ascii-background-drift {
+  from {
+    background-position: 50% -3rem;
+  }
+
+  to {
+    background-position: 50% 8rem;
+  }
+}
+
+@keyframes ascii-crt-breathe {
+  0%, 100% {
+    opacity: 0.11;
+    transform: translateY(0);
+  }
+
+  45% {
+    opacity: 0.15;
+    transform: translateY(0.5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell::before,
+  .app-shell::after {
+    animation: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .app-shell::before {
+    background-size: 1120px auto;
+    opacity: 0.24;
+  }
+
+  .app-shell::after {
+    opacity: 0.1;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   index_fix_32: stable ASCII-only global atmosphere.
+   Removes the weird floating HUD artifact layer, redesigns moths using the
+   supplied glyphs, adds the staring cat, and keeps the whole thing subtle.
+   -------------------------------------------------------------------------- */
+body {
+  background:
+    radial-gradient(circle at 10% 6%, rgba(157, 77, 255, 0.24), transparent 23rem),
+    radial-gradient(circle at 88% 18%, rgba(192, 140, 255, 0.11), transparent 27rem),
+    radial-gradient(circle at 18% 72%, rgba(157, 77, 255, 0.1), transparent 28rem),
+    linear-gradient(180deg, #020006 0%, #05010a 46%, #020006 100%);
+}
+
+body::before {
+  z-index: -2;
+  background:
+    repeating-linear-gradient(0deg, rgba(244, 240, 255, 0.018) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(90deg, rgba(157, 77, 255, 0.024) 0 1px, transparent 1px 56px),
+    radial-gradient(ellipse at 24% 26%, rgba(157, 77, 255, 0.074), transparent 34rem),
+    radial-gradient(ellipse at 80% 74%, rgba(192, 140, 255, 0.045), transparent 36rem);
+  background-size: 56px 56px, 56px 56px, cover, cover;
+  opacity: 0.72;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.72) 82%, rgba(0, 0, 0, 0.36));
+}
+
+body::after {
+  background:
+    radial-gradient(circle at 5% 18%, rgba(157, 77, 255, 0.12), transparent 18rem),
+    radial-gradient(circle at 95% 42%, rgba(157, 77, 255, 0.075), transparent 20rem),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.026) 0,
+      rgba(255, 255, 255, 0.026) 1px,
+      transparent 1px,
+      transparent 7px
+    ),
+    linear-gradient(90deg, rgba(2, 0, 6, 0.7), transparent 18%, transparent 82%, rgba(2, 0, 6, 0.64));
+  opacity: 0.48;
+}
+
+.app-shell {
+  isolation: isolate;
+}
+
+.app-shell::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  min-height: 100%;
+  pointer-events: none;
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%221600%22%20height%3D%221350%22%20viewBox%3D%220%200%201600%201350%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20.cmd%7Bfont-family%3A%27JetBrains%20Mono%27%2C%27Fira%20Code%27%2C%27Consolas%27%2Cmonospace%3Bfont-size%3A23px%3Bletter-spacing%3A1.1px%3Bfill%3A%23c08cff%3Bopacity%3A.30%7D%0A%20%20%20%20%20%20.soft%7Bfont-family%3A%27JetBrains%20Mono%27%2C%27Fira%20Code%27%2C%27Consolas%27%2Cmonospace%3Bfont-size%3A17px%3Bletter-spacing%3A1px%3Bfill%3A%23f4f0ff%3Bopacity%3A.17%7D%0A%20%20%20%20%20%20.dim%7Bfont-family%3A%27JetBrains%20Mono%27%2C%27Fira%20Code%27%2C%27Consolas%27%2Cmonospace%3Bfont-size%3A15px%3Bletter-spacing%3A.8px%3Bfill%3A%23bda9e6%3Bopacity%3A.13%7D%0A%20%20%20%20%20%20.moth%7Bfont-family%3A%27Times%20New%20Roman%27%2C%27Noto%20Serif%20Tibetan%27%2C%27Noto%20Serif%27%2Cserif%3Bfont-size%3A27px%3Bfill%3A%23c08cff%3Bopacity%3A.24%7D%0A%20%20%20%20%20%20.cat%7Bfont-family%3A%27JetBrains%20Mono%27%2C%27Fira%20Code%27%2C%27Consolas%27%2Cmonospace%3Bfont-size%3A19px%3Bfill%3A%23f4f0ff%3Bopacity%3A.19%7D%0A%20%20%20%20%20%20.thin%7Bfont-family%3A%27JetBrains%20Mono%27%2C%27Fira%20Code%27%2C%27Consolas%27%2Cmonospace%3Bfont-size%3A16px%3Bfill%3A%239d4dff%3Bopacity%3A.12%7D%0A%20%20%20%20%3C/style%3E%0A%20%20%3C/defs%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%2870%20110%29%20rotate%28-5%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cmd%22%20x%3D%220%22%20y%3D%220%22%3E%24%20cat%20./focus/llm-security.txt%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22soft%22%20x%3D%220%22%20y%3D%2234%22%3E%2B--------------------------------------%2B%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%220%22%20y%3D%2262%22%3E%7C%20status%3A%20active%20%20%20ttl%3D04%20%20nonce%3D7f2a%20%7C%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%220%22%20y%3D%2290%22%3E%7C%20tags%3A%20prompts%20/%20tools%20/%20defence%20%20%20%20%20%7C%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22soft%22%20x%3D%220%22%20y%3D%22118%22%3E%2B--------------------------------------%2B%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%281060%20145%29%20rotate%287%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22moth%22%20x%3D%220%22%20y%3D%220%22%3E%E0%BD%90%E0%BD%B2%E0%BD%8B%E0%BE%80%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22moth%22%20x%3D%2272%22%20y%3D%2218%22%3E%E0%BD%90%E0%BD%B2%E0%BC%8F%E0%BD%8B%E0%BE%80%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22moth%22%20x%3D%22150%22%20y%3D%22-8%22%3E%E0%BD%90%E0%BD%B2%C4%AD%E0%BD%8B%E0%BE%80%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22soft%22%20x%3D%220%22%20y%3D%2256%22%3Emoth_swarm%3Dquiet%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%220%22%20y%3D%2284%22%3Eplease%20don%27t%20tap%20the%20section%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%28850%20330%29%20rotate%284%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cmd%22%20x%3D%220%22%20y%3D%220%22%3E%24%20grep%20-r%20%22evidence%22%20./projects%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2224%22%20y%3D%2236%22%3E./decup.md%3A%20signed_identity%3Dtrue%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2224%22%20y%3D%2264%22%3E./wingftp.md%3A%20mitigation%3Dtested%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2224%22%20y%3D%2292%22%3E./llm.md%3A%20prompt_is_not_boundary%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%28145%20470%29%20rotate%283%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22moth%22%20x%3D%220%22%20y%3D%220%22%3E%E0%BF%94%E2%80%A7%20%D6%B6%D6%B8%D6%A2%CB%9A%CB%96%F0%90%A6%8D%CB%96%CB%9A%D6%B6%D6%B8%D6%A2%20%E2%80%A7%E0%BF%94%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22thin%22%20x%3D%220%22%20y%3D%2238%22%3E/%2A%20quiet%20moth%20process%20%2A/%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22soft%22%20x%3D%220%22%20y%3D%2270%22%3E%20%20%20%5C%5C%20%20%20%20%20//%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22soft%22%20x%3D%220%22%20y%3D%2298%22%3E%20%20%20%20%5C%5C%20%20%20//%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22soft%22%20x%3D%220%22%20y%3D%22126%22%3E%20---%20%28.%29%20---%20%20%20moth_swarm%3Dlow%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22soft%22%20x%3D%220%22%20y%3D%22154%22%3E%20%20%20%20//%20%20%20%5C%5C%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22soft%22%20x%3D%220%22%20y%3D%22182%22%3E%20%20%20//%20%20%20%20%20%5C%5C%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%281040%20575%29%20rotate%28-6%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cat%22%20x%3D%220%22%20y%3D%220%22%3E/%E2%80%A2%E1%B7%85%E2%80%8E%E2%80%8E%E2%80%A2%E1%B7%84%5C%E0%A9%AD%20%20i%20see%20your%20C%20pointers%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%222%22%20y%3D%2232%22%3Ecat_status%3Djudging_quietly%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%28650%20690%29%20rotate%28-4%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cmd%22%20x%3D%220%22%20y%3D%220%22%3E%2B--%20route%20table%20-----------------------%2B%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%220%22%20y%3D%2230%22%3E%7C%20peer%5B01%5D%20-%26gt%3B%20focus%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%220%22%20y%3D%2258%22%3E%7C%20peer%5B02%5D%20-%26gt%3B%20projects%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%220%22%20y%3D%2286%22%3E%7C%20peer%5B03%5D%20-%26gt%3B%20stack%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%220%22%20y%3D%22114%22%3E%7C%20peer%5B04%5D%20-%26gt%3B%20contact%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22cmd%22%20x%3D%220%22%20y%3D%22144%22%3E%2B--------------------------------------%2B%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%28110%20850%29%20rotate%28-3%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cmd%22%20x%3D%220%22%20y%3D%220%22%3E%24%20spool%20./contact/wanted_notice.print%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2220%22%20y%3D%2236%22%3Equeue%3Dclassified_output%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2220%22%20y%3D%2268%22%3Epaper%3Dloaded%20%20printer%3Dhaunted%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2220%22%20y%3D%22100%22%3Estatus%3Dfeeding_line_by_line%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%281090%20900%29%20rotate%285%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22moth%22%20x%3D%220%22%20y%3D%220%22%3E%C6%B8%CC%B5%CC%A1%D3%9C%CC%B5%CC%A8%CC%84%C6%B7%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22moth%22%20x%3D%22-60%22%20y%3D%2248%22%3E%E2%81%BA%E2%80%A7%E2%82%8A%CB%9A%20%E0%BD%90%E0%BD%B2%E2%8B%86%E2%99%B1%E2%8B%86%E0%BD%8B%E0%BE%80%20%CB%9A%E2%82%8A%E2%80%A7%E2%81%BA%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%28770%201090%29%20rotate%28-5%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cmd%22%20x%3D%220%22%20y%3D%220%22%3EPORTFOLIO_PATCH_NOTES.md%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%220%22%20y%3D%2236%22%3E%2B%20fixed%20cursed%20UI%20decisions%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%220%22%20y%3D%2266%22%3E%2B%20archived%20frontend%20experiments%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%220%22%20y%3D%2296%22%3Esession%3Dend-of-file%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%28125%201190%29%20rotate%284%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cat%22%20x%3D%220%22%20y%3D%220%22%3E/%E2%80%A2%E1%B7%85%E2%80%8E%E2%80%8E%E2%80%A2%E1%B7%84%5C%E0%A9%AD%20%20i%20ate%20your%20kernel%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%220%22%20y%3D%2232%22%3Ebackup_status%3Dprobably_fine%3C/text%3E%0A%20%20%3C/g%3E%0A%3C/svg%3E");
+  background-repeat: repeat-y;
+  background-size: min(1500px, 102vw) auto;
+  background-position: 50% 4rem;
+  opacity: 0.28;
+  mix-blend-mode: screen;
+  filter: blur(0.02px);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.48) 7rem,
+    rgba(0, 0, 0, 0.66) 28rem,
+    rgba(0, 0, 0, 0.62) calc(100% - 18rem),
+    rgba(0, 0, 0, 0.25) 100%
+  );
+  animation: none;
+}
+
+.app-shell::after {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  content: "";
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(244, 240, 255, 0.026) 0,
+      rgba(244, 240, 255, 0.026) 1px,
+      transparent 1px,
+      transparent 7px
+    ),
+    radial-gradient(ellipse at center, transparent 62%, rgba(2, 0, 6, 0.32) 100%);
+  opacity: 0.1;
+  mix-blend-mode: screen;
+  animation: none;
+}
+
+.app-shell > .site-header,
+.app-shell > main,
+.section-timeline {
+  position: relative;
+  z-index: 3;
+}
+
+.section-timeline {
+  z-index: 6;
+}
+
+.section-timeline::before {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  opacity: 0 !important;
+}
+
+@media (max-width: 680px) {
+  .app-shell::before {
+    background-size: 1180px auto;
+    background-position: 50% 2rem;
+    opacity: 0.2;
+  }
+
+  .app-shell::after {
+    opacity: 0.08;
+  }
+}
+
+
+/* index_fix_33: stop the background crimes and restore the fixed timeline spine.
+   The ghost layer is now sparse ASCII/text only, static, and does not hijack layout. */
+.app-shell::before {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  min-height: 100vh;
+  pointer-events: none;
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%221600%22%20height%3D%221400%22%20viewBox%3D%220%200%201600%201400%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20.cmd%7Bfont-family%3A%27JetBrains%20Mono%27%2C%27Fira%20Code%27%2C%27Consolas%27%2Cmonospace%3Bfont-size%3A22px%3Bletter-spacing%3A1.2px%3Bfill%3A%23c08cff%3Bopacity%3A.18%7D%0A%20%20%20%20%20%20.dim%7Bfont-family%3A%27JetBrains%20Mono%27%2C%27Fira%20Code%27%2C%27Consolas%27%2Cmonospace%3Bfont-size%3A17px%3Bletter-spacing%3A1px%3Bfill%3A%23f4f0ff%3Bopacity%3A.11%7D%0A%20%20%20%20%20%20.moth%7Bfont-family%3A%27Times%20New%20Roman%27%2C%27Noto%20Serif%20Tibetan%27%2Cserif%3Bfont-size%3A30px%3Bfill%3A%23c08cff%3Bopacity%3A.22%7D%0A%20%20%20%20%20%20.cat%7Bfont-family%3A%27JetBrains%20Mono%27%2C%27Fira%20Code%27%2C%27Consolas%27%2Cmonospace%3Bfont-size%3A21px%3Bletter-spacing%3A.6px%3Bfill%3A%23f4f0ff%3Bopacity%3A.14%7D%0A%20%20%20%20%3C/style%3E%0A%20%20%3C/defs%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%28120%20135%29%20rotate%28-5%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cmd%22%20x%3D%220%22%20y%3D%220%22%3E%24%20cat%20./focus/llm-security.txt%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2218%22%20y%3D%2234%22%3Ettl%3D04%20%20nonce%3D0x7d3a%20%20route%3D%26gt%3Bpeer%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2218%22%20y%3D%2262%22%3Esha256%3A%209d4dff...payload.bin%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%281025%20150%29%20rotate%284%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22moth%22%20x%3D%220%22%20y%3D%220%22%3E%E2%81%BA%E2%80%A7%E2%82%8A%CB%9A%20%E0%BD%90%E0%BD%B2%E2%8B%86%E2%99%B1%E2%8B%86%E0%BD%8B%E0%BE%80%20%CB%9A%E2%82%8A%E2%80%A7%E2%81%BA%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2244%22%20y%3D%2242%22%3Emoth_swarm%3Dquiet%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%28925%20315%29%20rotate%28-4%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cat%22%20x%3D%220%22%20y%3D%220%22%3E/%E2%80%A2%E1%B7%85%E2%80%8E%E2%80%8E%E2%80%A2%E1%B7%84%5C%E0%A9%AD%20%20i%20see%20your%20C%20pointers%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%28190%20430%29%20rotate%283%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22moth%22%20x%3D%220%22%20y%3D%220%22%3E%E0%BD%90%E0%BD%B2%E0%BD%8B%E0%BE%80%20%20%20%E0%BD%90%E0%BD%B2%E0%BC%8F%E0%BD%8B%E0%BE%80%20%20%20%E0%BD%90%E0%BD%B2%C4%AD%E0%BD%8B%E0%BE%80%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2218%22%20y%3D%2238%22%3Eprocess%3A%20quietly%20enumerating%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%28865%20565%29%20rotate%285%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cmd%22%20x%3D%220%22%20y%3D%220%22%3E%24%20grep%20-r%20evidence%20./projects%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2222%22%20y%3D%2234%22%3Edecup.md%3A%20signed_identity%3Dtrue%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2222%22%20y%3D%2262%22%3Ewingftp.md%3A%20mitigation%3Dtested%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2222%22%20y%3D%2290%22%3Ellm.md%3A%20prompt_is_not_boundary%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%28105%20720%29%20rotate%28-3%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cmd%22%20x%3D%220%22%20y%3D%220%22%3E%24%20spool%20./contact/wanted_notice.print%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2220%22%20y%3D%2234%22%3Equeue%3Dclassified_output%20%20paper%3Dloaded%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2220%22%20y%3D%2262%22%3Eprinter%3Dhaunted%20%20feed%3Dline_by_line%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%281090%20845%29%20rotate%28-6%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cat%22%20x%3D%220%22%20y%3D%220%22%3E/%E2%80%A2%E1%B7%85%E2%80%8E%E2%80%8E%E2%80%A2%E1%B7%84%5C%E0%A9%AD%20%20i%20ate%20your%20kernel%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22moth%22%20x%3D%2226%22%20y%3D%2246%22%3E%C6%B8%CC%B5%CC%A1%D3%9C%CC%B5%CC%A8%CC%84%C6%B7%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%28240%201045%29%20rotate%284%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22moth%22%20x%3D%220%22%20y%3D%220%22%3E%E0%BF%94%E2%80%A7%20%D6%B6%D6%B8%D6%A2%CB%9A%CB%96%F0%90%A6%8D%CB%96%CB%9A%D6%B6%D6%B8%D6%A2%20%E2%80%A7%E0%BF%94%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2218%22%20y%3D%2238%22%3Edo_not_tap%3Dtrue%3C/text%3E%0A%20%20%3C/g%3E%0A%0A%20%20%3Cg%20transform%3D%22translate%28900%201185%29%20rotate%283%29%22%3E%0A%20%20%20%20%3Ctext%20class%3D%22cmd%22%20x%3D%220%22%20y%3D%220%22%3EPORTFOLIO_PATCH_NOTES.md%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2218%22%20y%3D%2234%22%3E%2B%20fixed%20cursed%20UI%20decisions%3C/text%3E%0A%20%20%20%20%3Ctext%20class%3D%22dim%22%20x%3D%2218%22%20y%3D%2262%22%3Esession%3Dend-of-file%3C/text%3E%0A%20%20%3C/g%3E%0A%3C/svg%3E");
+  background-repeat: repeat-y;
+  background-size: min(1540px, 98vw) auto;
+  background-position: 50% 0;
+  opacity: 0.24;
+  mix-blend-mode: screen;
+  filter: none;
+  transform: none;
+  animation: none !important;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.44) 8rem,
+    rgba(0, 0, 0, 0.62) 26rem,
+    rgba(0, 0, 0, 0.58) calc(100% - 18rem),
+    rgba(0, 0, 0, 0.2) 100%
+  );
+}
+
+.app-shell::after {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  content: "";
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(244, 240, 255, 0.024) 0,
+      rgba(244, 240, 255, 0.024) 1px,
+      transparent 1px,
+      transparent 6px
+    ),
+    radial-gradient(ellipse at center, transparent 62%, rgba(2, 0, 6, 0.32) 100%);
+  opacity: 0.1;
+  mix-blend-mode: screen;
+  transform: none;
+  animation: none !important;
+}
+
+.app-shell > .site-header,
+.app-shell > main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Restore the timeline as a viewport-fixed navigation, the previous background
+   patch accidentally changed it back to relative. */
+.section-timeline {
+  position: fixed !important;
+  top: 50%;
+  left: max(1.15rem, calc((100vw - var(--container)) / 2 - 14.5rem));
+  z-index: 30;
+  transform: translateY(-50%);
+}
+
+.section-timeline::before {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  opacity: 0 !important;
+}
+
+.section-timeline::after {
+  opacity: 0.42;
+}
+
+@media (max-width: 1460px) {
+  .section-timeline {
+    left: max(0.8rem, calc((100vw - var(--container)) / 2 - 11.5rem));
+  }
+}
+
+@media (max-width: 1260px) {
+  .section-timeline {
+    left: 0.75rem;
+  }
+}
+
+@media (max-width: 980px) {
+  .section-timeline {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .app-shell::before {
+    background-size: 1080px auto;
+    opacity: 0.18;
+  }
+
+  .app-shell::after {
+    opacity: 0.08;
+  }
+}
+
+/* index_fix_34: increase ASCII background visibility without bringing back layout crimes.
+   Keeps the ghost layer static/fixed, only makes the existing ASCII/moth/cat texture easier to see. */
+body {
+  background:
+    radial-gradient(circle at 10% 6%, rgba(157, 77, 255, 0.28), transparent 23rem),
+    radial-gradient(circle at 88% 18%, rgba(192, 140, 255, 0.14), transparent 27rem),
+    radial-gradient(circle at 18% 72%, rgba(157, 77, 255, 0.13), transparent 28rem),
+    radial-gradient(circle at 74% 62%, rgba(157, 77, 255, 0.09), transparent 30rem),
+    linear-gradient(180deg, #020006 0%, #05010a 46%, #020006 100%);
+}
+
+body::before {
+  background:
+    repeating-linear-gradient(0deg, rgba(244, 240, 255, 0.026) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(90deg, rgba(157, 77, 255, 0.034) 0 1px, transparent 1px 56px),
+    radial-gradient(ellipse at 24% 26%, rgba(157, 77, 255, 0.095), transparent 34rem),
+    radial-gradient(ellipse at 80% 74%, rgba(192, 140, 255, 0.065), transparent 36rem);
+  opacity: 0.82;
+}
+
+.app-shell::before {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  min-height: 100vh !important;
+  pointer-events: none !important;
+  opacity: 0.36 !important;
+  mix-blend-mode: screen !important;
+  filter: brightness(1.28) saturate(1.12) !important;
+  background-position: 50% 0 !important;
+  background-size: min(1540px, 98vw) auto !important;
+  transform: none !important;
+  animation: none !important;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.58) 6rem,
+    rgba(0, 0, 0, 0.78) 23rem,
+    rgba(0, 0, 0, 0.74) calc(100% - 16rem),
+    rgba(0, 0, 0, 0.36) 100%
+  ) !important;
+}
+
+.app-shell::after {
+  opacity: 0.085 !important;
+}
+
+.section-timeline {
+  position: fixed !important;
+  z-index: 30 !important;
+}
+
+.app-shell > .site-header,
+.app-shell > main {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 980px) {
+  .section-timeline {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .app-shell::before {
+    opacity: 0.26 !important;
+    filter: brightness(1.18) saturate(1.08) !important;
+  }
+
+  .app-shell::after {
+    opacity: 0.065 !important;
+  }
+}
+
+/* index_fix_35: safe movement pass.
+   Only animate the background image position of the ASCII artifact layer.
+   Do NOT animate transform/position on .app-shell::before, otherwise the fixed
+   timeline and layout can get cursed again. */
+.app-shell::before {
+  animation: ascii-background-drift 52s linear infinite !important;
+  will-change: background-position;
+}
+
+@keyframes ascii-background-drift {
+  0% {
+    background-position: 50% 0;
+  }
+
+  50% {
+    background-position: 50.7% -18rem;
+  }
+
+  100% {
+    background-position: 50% -36rem;
+  }
+}
+
+body::before {
+  animation: global-grid-breathe 28s ease-in-out infinite alternate;
+}
+
+@keyframes global-grid-breathe {
+  from {
+    opacity: 0.76;
+    filter: brightness(0.96);
+  }
+
+  to {
+    opacity: 0.9;
+    filter: brightness(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell::before,
+  body::before {
+    animation: none !important;
+  }
+}
+
+/* index_fix_36: make the ASCII background drift visibly, but keep it layout-safe.
+   We still only animate background-position/opacity, never transform or position. */
+.app-shell::before {
+  background-repeat: repeat !important;
+  background-size: min(1480px, 104vw) auto !important;
+  opacity: 0.4 !important;
+  animation: ascii-background-drift-visible 24s linear infinite !important;
+  will-change: background-position, opacity;
+}
+
+@keyframes ascii-background-drift-visible {
+  0% {
+    background-position: 50% 0;
+    opacity: 0.34;
+  }
+
+  25% {
+    background-position: calc(50% + 2.6rem) -14rem;
+    opacity: 0.42;
+  }
+
+  50% {
+    background-position: calc(50% - 1.9rem) -28rem;
+    opacity: 0.38;
+  }
+
+  75% {
+    background-position: calc(50% + 1.4rem) -42rem;
+    opacity: 0.44;
+  }
+
+  100% {
+    background-position: 50% -56rem;
+    opacity: 0.34;
+  }
+}
+
+body::before {
+  animation: global-grid-breathe-visible 18s ease-in-out infinite alternate !important;
+}
+
+@keyframes global-grid-breathe-visible {
+  from {
+    opacity: 0.72;
+    filter: brightness(0.94);
+    background-position: 0 0, 0 0, center, center;
+  }
+
+  to {
+    opacity: 0.92;
+    filter: brightness(1.1);
+    background-position: 0 18px, 18px 0, center, center;
+  }
+}
+
+@media (max-width: 680px) {
+  .app-shell::before {
+    animation-duration: 32s !important;
+    opacity: 0.28 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell::before,
+  body::before {
+    animation: none !important;
+  }
+}
