@@ -33,9 +33,32 @@ const contactLinks = [
   },
 ];
 
+const patchNotesText = String.raw`<!-- appended near end-of-page -->
+
+PORTFOLIO_PATCH_NOTES.md
+
+v0.9.7-nightly
+
++ indexed security labs
++ archived frontend experiments
++ added interactive terminal gremlin
++ fixed several cursed UI decisions
+- removed sad default footer
+
+status: still learning // still building
+branch: main
+session: end-of-file
+
+ᓚ₍⑅^..^₎♡ just enumerating quietly`;
+
+const patchNotesLineCount = patchNotesText.split("\n").length + 1;
+
 function ContactSection() {
   const printerRef = useRef<HTMLDivElement | null>(null);
+  const footerRef = useRef<HTMLElement | null>(null);
   const [isPrinted, setIsPrinted] = useState(false);
+  const [hasFooterStarted, setHasFooterStarted] = useState(false);
+  const [patchNotesOutput, setPatchNotesOutput] = useState("");
 
   useEffect(() => {
     const printerElement = printerRef.current;
@@ -70,6 +93,68 @@ function ContactSection() {
       observer.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    const footerElement = footerRef.current;
+
+    if (!footerElement) {
+      return;
+    }
+
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (motionQuery.matches) {
+      setHasFooterStarted(true);
+      setPatchNotesOutput(patchNotesText);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasFooterStarted(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.42,
+        rootMargin: "0px 0px -8% 0px",
+      },
+    );
+
+    observer.observe(footerElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!hasFooterStarted || patchNotesOutput.length >= patchNotesText.length) {
+      return;
+    }
+
+    const typeSpeedMs = 28;
+    const charactersPerTick = 1;
+
+    const typingTimer = window.setInterval(() => {
+      setPatchNotesOutput((currentOutput) => {
+        if (currentOutput.length >= patchNotesText.length) {
+          window.clearInterval(typingTimer);
+          return currentOutput;
+        }
+
+        return patchNotesText.slice(
+          0,
+          Math.min(currentOutput.length + charactersPerTick, patchNotesText.length),
+        );
+      });
+    }, typeSpeedMs);
+
+    return () => {
+      window.clearInterval(typingTimer);
+    };
+  }, [hasFooterStarted, patchNotesOutput.length]);
 
   return (
     <>
@@ -114,8 +199,25 @@ function ContactSection() {
         </div>
       </SectionFrame>
 
-      <footer className="site-footer">
-        <p>Security is a process, not a product. Keep learning. Keep building.</p>
+      <footer
+        className={`site-footer site-footer--page-edit${hasFooterStarted ? " is-editing" : ""}`}
+        ref={footerRef}
+        aria-label="Portfolio patch notes footer"
+      >
+        <div className="site-footer__edit-meta" aria-hidden="true">
+          <span>editing: /portfolio/end.md</span>
+          <span>autosave: armed</span>
+        </div>
+        <div className="site-footer__edit-sheet">
+          <ol className="site-footer__edit-lines" aria-hidden="true">
+            {Array.from({ length: patchNotesLineCount }, (_, index) => (
+              <li key={index}>{String(index + 1).padStart(2, "0")}</li>
+            ))}
+          </ol>
+          <pre className="site-footer__edit-buffer" aria-label="Portfolio patch notes">{patchNotesOutput}{patchNotesOutput.length < patchNotesText.length ? (
+            <span className="site-footer__cursor" aria-hidden="true" />
+          ) : null}</pre>
+        </div>
       </footer>
     </>
   );

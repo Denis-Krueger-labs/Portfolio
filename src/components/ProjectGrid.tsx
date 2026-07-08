@@ -1,5 +1,9 @@
-import type { CSSProperties } from "react";
-import { featuredProjects, moreProjects } from "../data/projects";
+import type { CSSProperties, ReactNode } from "react";
+import {
+  featuredProjects,
+  fixDeskProject,
+  moreProjects,
+} from "../data/projects";
 import type { Project } from "../data/projects";
 import SectionFrame from "./SectionFrame";
 
@@ -44,19 +48,16 @@ const moreProjectIcons: Record<string, string> = {
     .href,
 };
 
-const fixDeskProject: Project = {
-  title: "FixDesk",
-  description:
-    "Internal repair shop management frontend built with React and TypeScript.",
-  tags: ["React", "TypeScript", "Frontend"],
-};
-
 type ProjectCardProps = {
   project: Project;
   compact?: boolean;
   visualSrc?: string;
   archiveLayer?: "front" | "behind";
 };
+
+function isExternalLink(href: string) {
+  return href.startsWith("http://") || href.startsWith("https://");
+}
 
 function ProjectCard({
   project,
@@ -71,20 +72,18 @@ function ProjectCard({
       } as CSSProperties & { "--archive-card-bg": string })
     : undefined;
 
-  return (
-    <article
-      style={archiveStyle}
-      tabIndex={archiveLayer === "behind" ? 0 : undefined}
-      className={[
-        "project-card",
-        visualSrc && "project-card--featured",
-        compact && "project-card--archive",
-        compact && "project-card--compact",
-        archiveLayer && `project-card--archive-${archiveLayer}`,
-      ]
-        .filter(Boolean)
-        .join(" ")}
-    >
+  const className = [
+    "project-card",
+    visualSrc && "project-card--featured",
+    compact && "project-card--archive",
+    compact && "project-card--compact",
+    archiveLayer && `project-card--archive-${archiveLayer}`,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const content: ReactNode = (
+    <>
       {visualSrc ? (
         <div className="project-card__visual" aria-hidden="true">
           <img src={visualSrc} alt="" loading="lazy" />
@@ -117,19 +116,51 @@ function ProjectCard({
           ))}
         </ul>
       </div>
+    </>
+  );
+
+  if (project.href) {
+    const external = isExternalLink(project.href);
+
+    return (
+      <a
+        style={archiveStyle}
+        className={className}
+        href={project.href}
+        aria-label={`Open ${project.title} project`}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noreferrer" : undefined}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <article
+      style={archiveStyle}
+      tabIndex={compact ? 0 : undefined}
+      className={className}
+      aria-label={`${project.title} project card`}
+    >
+      {content}
     </article>
   );
 }
 
-function ArchiveStack({ project }: { project: Project }) {
+type ArchiveStackProps = {
+  frontProject: Project;
+  behindProject: Project;
+};
+
+function ArchiveStack({ frontProject, behindProject }: ArchiveStackProps) {
   return (
     <div
       className="archive-stack"
-      tabIndex={0}
-      aria-label="blue project with hidden FixDesk archive card"
+      aria-label="Stacked archive cards for FixDesk and blue"
     >
-      <ProjectCard project={fixDeskProject} compact archiveLayer="behind" />
-      <ProjectCard project={project} compact archiveLayer="front" />
+      <ProjectCard project={behindProject} compact archiveLayer="behind" />
+      <ProjectCard project={frontProject} compact archiveLayer="front" />
     </div>
   );
 }
@@ -176,13 +207,17 @@ function ProjectGrid() {
           <span>archive set</span>
         </div>
         <div className="project-grid project-grid--compact">
-          {moreProjects.map((project) => (
+          {moreProjects.map((project) =>
             project.title === "blue" ? (
-              <ArchiveStack key={project.title} project={project} />
+              <ArchiveStack
+                key="fixdesk-blue-stack"
+                frontProject={fixDeskProject}
+                behindProject={project}
+              />
             ) : (
               <ProjectCard key={project.title} project={project} compact />
-            )
-          ))}
+            ),
+          )}
         </div>
       </div>
     </SectionFrame>

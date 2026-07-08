@@ -3,6 +3,7 @@ export type Project = {
   description: string;
   tags: string[];
   featured?: boolean;
+  href?: string;
 };
 
 export const featuredProjects: Project[] = [
@@ -35,6 +36,13 @@ export const featuredProjects: Project[] = [
     featured: true,
   },
 ];
+
+export const fixDeskProject: Project = {
+  title: "FixDesk",
+  description:
+    "Repair shop management frontend built with React and TypeScript.",
+  tags: ["React", "TypeScript"],
+};
 
 export const moreProjects: Project[] = [
   {
