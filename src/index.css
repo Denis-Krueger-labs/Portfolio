@@ -7801,3 +7801,431 @@ body::before {
     padding: 0.3rem 0 !important;
   }
 }
+
+/* --------------------------------------------------------------------------
+   index_fix_40: hero profile artifact.
+   Adds the uploaded profile illustration as a small floating file window in
+   the hero without turning it into a generic avatar bubble.
+   -------------------------------------------------------------------------- */
+.hero__profile-artifact {
+  position: absolute;
+  top: 58%;
+  right: clamp(-3.5rem, -3.8vw, -2rem);
+  z-index: 5;
+  width: clamp(12rem, 17vw, 15.5rem);
+  overflow: hidden;
+  border-top: 1px solid rgba(157, 77, 255, 0.46);
+  border-bottom: 1px solid rgba(157, 77, 255, 0.48);
+  color: rgba(244, 240, 255, 0.72);
+  font-family: var(--font-mono);
+  background:
+    linear-gradient(180deg, rgba(5, 2, 9, 0.2), rgba(5, 2, 9, 0.72)),
+    rgba(3, 1, 6, 0.46);
+  box-shadow:
+    0 0 22px rgba(157, 77, 255, 0.16),
+    0 12px 44px rgba(0, 0, 0, 0.48);
+  pointer-events: none;
+  transform: rotate(-1.4deg);
+  animation: hero-profile-float 8.5s ease-in-out infinite alternate;
+}
+
+.hero__profile-artifact::before,
+.hero__profile-artifact::after {
+  position: absolute;
+  pointer-events: none;
+  content: "";
+}
+
+.hero__profile-artifact::before {
+  inset: 0;
+  z-index: 2;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(244, 240, 255, 0.05) 0,
+      rgba(244, 240, 255, 0.05) 1px,
+      transparent 1px,
+      transparent 6px
+    ),
+    linear-gradient(90deg, rgba(157, 77, 255, 0.18), transparent 22%, transparent 78%, rgba(157, 77, 255, 0.12));
+  mix-blend-mode: screen;
+  opacity: 0.34;
+}
+
+.hero__profile-artifact::after {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  height: 0.45rem;
+  background:
+    linear-gradient(90deg, rgba(157, 77, 255, 0.8), rgba(192, 140, 255, 0.92), rgba(157, 77, 255, 0.58));
+  box-shadow:
+    0 0 14px rgba(157, 77, 255, 0.5),
+    0 0 30px rgba(157, 77, 255, 0.18);
+}
+
+.hero__profile-bar {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  border-bottom: 1px solid rgba(157, 77, 255, 0.32);
+  padding: 0.42rem 0.58rem;
+  background: rgba(2, 0, 6, 0.54);
+}
+
+.hero__profile-dots {
+  display: inline-flex;
+  gap: 0.28rem;
+  flex: 0 0 auto;
+}
+
+.hero__profile-dots span {
+  width: 0.34rem;
+  height: 0.34rem;
+  border: 1px solid rgba(192, 140, 255, 0.72);
+  background: rgba(157, 77, 255, 0.12);
+}
+
+.hero__profile-file {
+  min-width: 0;
+  overflow: hidden;
+  color: rgba(244, 240, 255, 0.74);
+  font-size: clamp(0.58rem, 0.75vw, 0.7rem);
+  letter-spacing: 0.12em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.hero__profile-frame {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: clamp(7.8rem, 11vw, 10.4rem);
+  place-items: end center;
+  overflow: hidden;
+  padding: 0.4rem 0.45rem 0.55rem;
+  background:
+    radial-gradient(circle at 50% 58%, rgba(244, 240, 255, 0.06), transparent 46%),
+    radial-gradient(circle at 50% 78%, rgba(157, 77, 255, 0.18), transparent 62%),
+    rgba(1, 0, 4, 0.42);
+}
+
+.hero__profile-frame::before {
+  position: absolute;
+  inset: 0.8rem 0.75rem 0.9rem;
+  border: 1px solid rgba(157, 77, 255, 0.2);
+  content: "";
+  opacity: 0.54;
+  pointer-events: none;
+}
+
+.hero__profile-frame img {
+  position: relative;
+  z-index: 1;
+  width: min(92%, 11.5rem);
+  max-height: clamp(7.4rem, 10.5vw, 10.2rem);
+  object-fit: contain;
+  object-position: center bottom;
+  opacity: 0.94;
+  filter:
+    grayscale(1)
+    contrast(1.16)
+    brightness(1.05)
+    drop-shadow(0 0 12px rgba(244, 240, 255, 0.16))
+    drop-shadow(0 0 24px rgba(157, 77, 255, 0.24));
+}
+
+.hero__profile-caption {
+  position: relative;
+  z-index: 4;
+  margin: 0;
+  padding: 0.42rem 0.58rem 0.78rem;
+  color: rgba(192, 140, 255, 0.72);
+  font-size: clamp(0.54rem, 0.7vw, 0.64rem);
+  letter-spacing: 0.14em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  background: rgba(2, 0, 6, 0.5);
+}
+
+@keyframes hero-profile-float {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-1.4deg);
+  }
+
+  to {
+    transform: translate3d(0, -8px, 0) rotate(0.7deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__profile-artifact {
+    animation: none;
+  }
+}
+
+@media (max-width: 1180px) {
+  .hero__profile-artifact {
+    right: clamp(-1.4rem, -2vw, -0.5rem);
+    width: clamp(10.5rem, 18vw, 13rem);
+  }
+}
+
+@media (max-width: 980px) {
+  .hero__profile-artifact {
+    position: relative;
+    top: auto;
+    right: auto;
+    justify-self: end;
+    width: min(14rem, 58vw);
+    margin: 1rem 0 0;
+    transform: rotate(-1deg);
+  }
+}
+
+@media (max-width: 680px) {
+  .hero__profile-artifact {
+    justify-self: center;
+    width: min(13rem, 72vw);
+    margin-top: 0.85rem;
+  }
+
+  .hero__profile-frame {
+    min-height: 8rem;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   index_fix_41: lower the hero profile artifact.
+   Keeps the profile file-window as a secondary identity artifact, but moves it
+   down so it no longer competes with the terminal text block.
+   -------------------------------------------------------------------------- */
+.hero__profile-artifact {
+  top: 68% !important;
+}
+
+@media (max-width: 1180px) {
+  .hero__profile-artifact {
+    top: 70% !important;
+  }
+}
+
+@media (max-width: 980px) {
+  .hero__profile-artifact {
+    top: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   index_fix_42: make the hero profile artifact match the terminal window.
+   The profile file now shares the same border, title bar, background language,
+   and shadow system as the hero terminal instead of looking like a separate UI.
+   -------------------------------------------------------------------------- */
+.hero__profile-artifact {
+  border: var(--border-thin) !important;
+  border-radius: var(--radius-none) !important;
+  background:
+    linear-gradient(135deg, rgba(157, 77, 255, 0.1), transparent 38%),
+    rgba(8, 4, 12, 0.92) !important;
+  box-shadow: 7px 7px 0 rgba(157, 77, 255, 0.16) !important;
+}
+
+.hero__profile-artifact::before {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(244, 240, 255, 0.032) 0,
+      rgba(244, 240, 255, 0.032) 1px,
+      transparent 1px,
+      transparent 6px
+    ) !important;
+  opacity: 0.42 !important;
+  mix-blend-mode: normal !important;
+}
+
+.hero__profile-artifact::after {
+  display: none !important;
+}
+
+.hero__profile-bar {
+  display: flex !important;
+  min-height: 2.3rem !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.65rem !important;
+  border-bottom: var(--border-thin) !important;
+  padding: 0.72rem 0.78rem !important;
+  background: rgba(8, 4, 12, 0.34) !important;
+}
+
+.hero__profile-dots {
+  gap: 0.45rem !important;
+}
+
+.hero__profile-dots span {
+  width: 0.55rem !important;
+  height: 0.55rem !important;
+  border: 1px solid var(--color-purple-soft) !important;
+  background: var(--color-panel-strong) !important;
+}
+
+.hero__profile-dots span:first-child {
+  border-color: var(--color-accent-soft) !important;
+  background: var(--color-green-soft) !important;
+}
+
+.hero__profile-file {
+  color: rgba(244, 240, 255, 0.7) !important;
+  font-size: clamp(0.58rem, 0.74vw, 0.68rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.14em !important;
+}
+
+.hero__profile-frame {
+  min-height: clamp(7.9rem, 10.8vw, 10.25rem) !important;
+  padding: 0.7rem 0.7rem 0.35rem !important;
+  background:
+    linear-gradient(rgba(157, 77, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(157, 77, 255, 0.025) 1px, transparent 1px),
+    radial-gradient(circle at 50% 74%, rgba(157, 77, 255, 0.16), transparent 58%),
+    rgba(5, 2, 9, 0.52) !important;
+  background-size:
+    24px 24px,
+    24px 24px,
+    cover,
+    cover !important;
+}
+
+.hero__profile-frame::before {
+  inset: 0.72rem !important;
+  border: 1px solid rgba(157, 77, 255, 0.28) !important;
+  opacity: 0.62 !important;
+}
+
+.hero__profile-frame img {
+  width: min(90%, 11.2rem) !important;
+  max-height: clamp(7.2rem, 10vw, 9.7rem) !important;
+}
+
+.hero__profile-caption {
+  border-top: var(--border-thin) !important;
+  padding: 0.55rem 0.78rem 0.62rem !important;
+  color: var(--color-muted-strong) !important;
+  font-size: clamp(0.56rem, 0.68vw, 0.62rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+  background: rgba(8, 4, 12, 0.34) !important;
+}
+
+.hero__profile-caption::before {
+  color: var(--color-accent) !important;
+  content: "> " !important;
+}
+
+.hero__profile-artifact:hover {
+  box-shadow:
+    0 0 22px rgba(157, 77, 255, 0.15),
+    7px 7px 0 rgba(157, 77, 255, 0.2) !important;
+}
+
+/* --------------------------------------------------------------------------
+   index_fix_43: tuck the hero profile artifact behind the terminal window.
+   Moves the profile file farther right and lowers its layer so the terminal
+   remains the front window in the hero composition.
+   -------------------------------------------------------------------------- */
+.hero__profile-artifact {
+  right: clamp(-8.5rem, -8vw, -5.2rem) !important;
+  z-index: 3 !important;
+}
+
+.hero__terminal {
+  z-index: 5 !important;
+}
+
+@media (max-width: 1180px) {
+  .hero__profile-artifact {
+    right: clamp(-5.5rem, -5.5vw, -3rem) !important;
+    z-index: 3 !important;
+  }
+}
+
+@media (max-width: 980px) {
+  .hero__profile-artifact {
+    right: auto !important;
+    z-index: 3 !important;
+  }
+
+  .hero__terminal {
+    z-index: 5 !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   index_fix_44: move faux window controls to the Windows side.
+   The little close/max/min squares now live on the right side of terminal-like
+   title bars instead of sitting on the left like macOS traffic lights.
+   -------------------------------------------------------------------------- */
+.terminal-window__bar {
+  justify-content: flex-end !important;
+}
+
+.hero__profile-bar {
+  justify-content: space-between !important;
+}
+
+.hero__profile-file {
+  order: 1 !important;
+  margin-right: auto !important;
+}
+
+.hero__profile-dots {
+  order: 2 !important;
+  margin-left: auto !important;
+}
+
+.focus-terminal__chrome,
+.focus-command-terminal__chrome {
+  grid-template-columns: minmax(0, 1fr) auto auto !important;
+}
+
+.focus-terminal__chrome p,
+.focus-command-terminal__chrome p {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+}
+
+.focus-terminal__status,
+.focus-command-terminal__chrome > span {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+}
+
+.focus-terminal__dots,
+.focus-command-terminal__dots {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  justify-self: end !important;
+}
+
+@media (max-width: 680px) {
+  .focus-terminal__chrome,
+  .focus-command-terminal__chrome {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+  }
+
+  .focus-terminal__status,
+  .focus-command-terminal__chrome > span {
+    display: none !important;
+  }
+
+  .focus-terminal__dots,
+  .focus-command-terminal__dots {
+    grid-column: 2 !important;
+  }
+}

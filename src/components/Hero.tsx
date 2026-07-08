@@ -3,6 +3,7 @@ const ornamentAssets = {
     .href,
   moth: new URL("../assets/ornaments/moth-skull-purple.png", import.meta.url)
     .href,
+  profile: new URL("../assets/hero/profile.svg", import.meta.url).href,
 };
 
 const terminalLines = [
@@ -21,7 +22,7 @@ function Hero() {
         <p className="hero__subtitle">InfoSec student at THWS Würzburg</p>
         <p className="hero__signal">
           practical security <span aria-hidden="true">·</span> secure software
-          engineering <span aria-hidden="true">·</span> offensive & defensive
+          engineering <span aria-hidden="true">·</span> offensive &amp; defensive
           thinking
         </p>
 
@@ -50,6 +51,25 @@ function Hero() {
           ))}
         </div>
       </div>
+
+      <aside className="hero__profile-artifact" aria-label="Profile artifact">
+        <div className="hero__profile-bar" aria-hidden="true">
+          <span className="hero__profile-dots">
+            <span />
+            <span />
+            <span />
+          </span>
+          <span className="hero__profile-file">profile.svg</span>
+        </div>
+        <div className="hero__profile-frame">
+          <img
+            src={ornamentAssets.profile}
+            alt="Denis Krüger profile illustration"
+            loading="eager"
+          />
+        </div>
+        <p className="hero__profile-caption">subject avatar // verified</p>
+      </aside>
 
       <div className="hero__decor" aria-hidden="true">
         <div className="cyber-mesh" aria-hidden="true">
