@@ -1639,13 +1639,13 @@ svg {
 
 .stack-deck--outgoing {
   z-index: 1;
-  animation: stack-hand-slide-out 1000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: stack-hand-slide-out 2000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   pointer-events: none;
 }
 
 .stack-deck--incoming {
   z-index: 3;
-  animation: stack-hand-slide-in 1000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: stack-hand-slide-in 2000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   pointer-events: none;
 }
 
