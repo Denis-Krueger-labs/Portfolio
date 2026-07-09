@@ -90,7 +90,7 @@ function SectionBridge({
       <span className="section-bridge__index" aria-hidden="true">
         {index}
       </span>
-      <span className="section-bridge__prompt">jessy@portfolio:{path}$</span>
+      <span className="section-bridge__prompt">0N1SEC@portfolio:{path}$</span>
       <code className="section-bridge__command">{command}</code>
       <span className="section-bridge__result">{result}</span>
     </div>
