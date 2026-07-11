@@ -8461,3 +8461,13 @@ body::before {
     transition: none;
   }
 }
+
+/* TEMP PROJECT PERFORMANCE TEST */
+.projects-section *,
+.projects-section *::before,
+.projects-section *::after {
+  animation: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}

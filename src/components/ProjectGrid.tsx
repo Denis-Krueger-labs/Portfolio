@@ -9,19 +9,19 @@ import SectionFrame from "./SectionFrame";
 
 const projectVisuals: Record<string, string> = {
   Decup: new URL(
-    "../assets/projects/project-card-decup.svg",
+    "../assets/projects/project-card-decup.png",
     import.meta.url,
   ).href,
   "Wing FTP CVE Lab": new URL(
-    "../assets/projects/project-card-wingftp.svg",
+    "../assets/projects/project-card-wingftp.png",
     import.meta.url,
   ).href,
   "KMU IT/OT Network Security Lab": new URL(
-    "../assets/projects/project-card-network.svg",
+    "../assets/projects/project-card-network.png",
     import.meta.url,
   ).href,
   "LLM Prompt Injection Research": new URL(
-    "../assets/projects/project-card-llm.svg",
+    "../assets/projects/project-card-llm.png",
     import.meta.url,
   ).href,
 };
