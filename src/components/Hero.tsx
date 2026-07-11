@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+
 const ornamentAssets = {
   moon: new URL("../assets/ornaments/moon-dripping-white.png", import.meta.url)
     .href,
@@ -13,7 +15,71 @@ const terminalLines = [
   "> offense to learn. defense to protect.",
 ];
 
+const ambientTerminalLines = [
+  "> cat still judging your code...",
+  "> background process: moth_watch.service active",
+  "> note: suspicious amount of purple detected",
+  "> compiler status: emotionally unavailable",
+];
+
 function Hero() {
+  const ambientTimerRef = useRef<number | null>(null);
+  const [ambientLine, setAmbientLine] = useState<string | null>(null);
+  const [ambientVisible, setAmbientVisible] = useState(false);
+
+  useEffect(() => {
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (motionQuery.matches) {
+      return;
+    }
+
+    let cancelled = false;
+
+    const scheduleAmbientLine = () => {
+      const delay = 14000 + Math.random() * 22000;
+
+      ambientTimerRef.current = window.setTimeout(() => {
+        if (cancelled) {
+          return;
+        }
+
+        const nextLine =
+          ambientTerminalLines[
+            Math.floor(Math.random() * ambientTerminalLines.length)
+          ];
+
+        setAmbientLine(nextLine);
+        setAmbientVisible(true);
+
+        window.setTimeout(() => {
+          if (cancelled) {
+            return;
+          }
+
+          setAmbientVisible(false);
+
+          window.setTimeout(() => {
+            if (!cancelled) {
+              setAmbientLine(null);
+              scheduleAmbientLine();
+            }
+          }, 700);
+        }, 5200 + Math.random() * 2200);
+      }, delay);
+    };
+
+    scheduleAmbientLine();
+
+    return () => {
+      cancelled = true;
+
+      if (ambientTimerRef.current !== null) {
+        window.clearTimeout(ambientTimerRef.current);
+      }
+    };
+  }, []);
+
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero__content">
@@ -49,6 +115,18 @@ function Hero() {
               {line.slice(1)}
             </p>
           ))}
+
+          <p
+            className={[
+              "hero__ambient-line",
+              ambientVisible && "is-visible",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            aria-hidden={!ambientVisible}
+          >
+            {ambientLine ?? "\u00a0"}
+          </p>
         </div>
       </div>
 

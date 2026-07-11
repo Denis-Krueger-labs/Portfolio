@@ -33,6 +33,14 @@ const contactLinks = [
   },
 ];
 
+const footerCatMessages = [
+  "i ate your kernel.",
+  "your C pointers look crunchy.",
+  "grep won\'t save you.",
+  "segmentation fault. skill issue.",
+  "the compiler cried.",
+];
+
 const patchNotesText = String.raw`<!-- appended near end-of-page -->
 
 PORTFOLIO_PATCH_NOTES.md
@@ -47,9 +55,7 @@ v0.9.7-nightly
 
 status: still learning // still building
 branch: main
-session: end-of-file
-
-ᓚ₍⑅^..^₎♡ just enumerating quietly`;
+session: end-of-file`;
 
 const patchNotesLineCount = patchNotesText.split("\n").length + 1;
 
@@ -59,6 +65,9 @@ function ContactSection() {
   const [isPrinted, setIsPrinted] = useState(false);
   const [hasFooterStarted, setHasFooterStarted] = useState(false);
   const [patchNotesOutput, setPatchNotesOutput] = useState("");
+  const [footerCatMessage, setFooterCatMessage] = useState(
+    footerCatMessages[0],
+  );
 
   useEffect(() => {
     const printerElement = printerRef.current;
@@ -128,6 +137,55 @@ function ContactSection() {
       observer.disconnect();
     };
   }, []);
+
+
+  useEffect(() => {
+    if (
+      !hasFooterStarted ||
+      patchNotesOutput.length < patchNotesText.length
+    ) {
+      return;
+    }
+
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (motionQuery.matches) {
+      return;
+    }
+
+    let cancelled = false;
+    let timer: number | null = null;
+
+    const scheduleMessage = () => {
+      timer = window.setTimeout(() => {
+        if (cancelled) {
+          return;
+        }
+
+        setFooterCatMessage((currentMessage) => {
+          const availableMessages = footerCatMessages.filter(
+            (message) => message !== currentMessage,
+          );
+
+          return availableMessages[
+            Math.floor(Math.random() * availableMessages.length)
+          ];
+        });
+
+        scheduleMessage();
+      }, 18000 + Math.random() * 26000);
+    };
+
+    scheduleMessage();
+
+    return () => {
+      cancelled = true;
+
+      if (timer !== null) {
+        window.clearTimeout(timer);
+      }
+    };
+  }, [hasFooterStarted, patchNotesOutput.length]);
 
   useEffect(() => {
     if (!hasFooterStarted || patchNotesOutput.length >= patchNotesText.length) {
@@ -218,6 +276,17 @@ function ContactSection() {
             <span className="site-footer__cursor" aria-hidden="true" />
           ) : null}</pre>
         </div>
+        <p
+          className={[
+            "site-footer__cat-process",
+            patchNotesOutput.length >= patchNotesText.length && "is-online",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          aria-live="polite"
+        >
+          <span aria-hidden="true">/•᷅‎‎•᷄\੭</span> {footerCatMessage}
+        </p>
       </footer>
     </>
   );

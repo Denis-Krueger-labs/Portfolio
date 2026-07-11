@@ -347,6 +347,8 @@ function renderTerminalLine(line: TerminalLine) {
 function FocusSection() {
   const files = useMemo(() => buildFocusFiles(), []);
   const [command, setCommand] = useState("");
+  const [idleDemo, setIdleDemo] = useState("");
+  const [isInputFocused, setIsInputFocused] = useState(false);
   const [history, setHistory] = useState<TerminalLine[]>(initialTerminalLines);
   const lineIdRef = useRef(initialTerminalLines.length + 1);
   const screenRef = useRef<HTMLDivElement | null>(null);
@@ -361,6 +363,85 @@ function FocusSection() {
 
     screen.scrollTo({ top: screen.scrollHeight, behavior: "smooth" });
   }, [history]);
+
+  useEffect(() => {
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (motionQuery.matches || isInputFocused || command.length > 0) {
+      setIdleDemo("");
+      return;
+    }
+
+    const idleCommands = [
+      "cat llm",
+      "cat web",
+      "grep -r evidence ./projects",
+      "cat active-directory.txt",
+      "whoami",
+    ];
+
+    let cancelled = false;
+    let typingTimer: number | null = null;
+    let eraseTimer: number | null = null;
+    let scheduleTimer: number | null = null;
+
+    const scheduleDemo = () => {
+      const delay = 11000 + Math.random() * 18000;
+
+      scheduleTimer = window.setTimeout(() => {
+        if (cancelled || isInputFocused || command.length > 0) {
+          return;
+        }
+
+        const sample =
+          idleCommands[Math.floor(Math.random() * idleCommands.length)];
+        let index = 0;
+
+        typingTimer = window.setInterval(() => {
+          index += 1;
+          setIdleDemo(sample.slice(0, index));
+
+          if (index >= sample.length && typingTimer !== null) {
+            window.clearInterval(typingTimer);
+            typingTimer = null;
+
+            eraseTimer = window.setTimeout(() => {
+              let eraseIndex = sample.length;
+
+              typingTimer = window.setInterval(() => {
+                eraseIndex -= 1;
+                setIdleDemo(sample.slice(0, eraseIndex));
+
+                if (eraseIndex <= 0 && typingTimer !== null) {
+                  window.clearInterval(typingTimer);
+                  typingTimer = null;
+                  scheduleDemo();
+                }
+              }, 52);
+            }, 1800);
+          }
+        }, 86);
+      }, delay);
+    };
+
+    scheduleDemo();
+
+    return () => {
+      cancelled = true;
+
+      if (typingTimer !== null) {
+        window.clearInterval(typingTimer);
+      }
+
+      if (eraseTimer !== null) {
+        window.clearTimeout(eraseTimer);
+      }
+
+      if (scheduleTimer !== null) {
+        window.clearTimeout(scheduleTimer);
+      }
+    };
+  }, [command.length, isInputFocused]);
 
   const nextId = () => {
     const id = lineIdRef.current;
@@ -496,7 +577,9 @@ function FocusSection() {
               spellCheck={false}
               type="text"
               value={command}
-              placeholder="cat web-application-security.txt"
+              placeholder={idleDemo || "cat web-application-security.txt"}
+              onFocus={() => setIsInputFocused(true)}
+              onBlur={() => setIsInputFocused(false)}
               onChange={(event) => setCommand(event.target.value)}
             />
             <button className="sr-only" type="submit">

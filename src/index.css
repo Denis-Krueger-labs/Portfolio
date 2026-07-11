@@ -8229,3 +8229,235 @@ body::before {
     grid-column: 2 !important;
   }
 }
+
+
+/* --------------------------------------------------------------------------
+   index_fix_45: inhabited workstation ambient motion.
+   Independent, low-amplitude processes keep the page alive without obvious
+   synchronized looping or layout movement.
+   -------------------------------------------------------------------------- */
+
+.hero__terminal {
+  animation: inhabited-terminal-breathe 17s ease-in-out 2.7s infinite alternate;
+}
+
+.hero__profile-artifact {
+  animation: inhabited-profile-drift 23s ease-in-out 6.4s infinite alternate !important;
+  will-change: transform;
+}
+
+.hero-ornament--moon {
+  animation:
+    ornament-moon-pulse 9.7s ease-in-out 1.2s infinite alternate,
+    inhabited-moon-sway 21s ease-in-out 4.8s infinite alternate !important;
+}
+
+.hero-ornament--moth {
+  animation:
+    ornament-moth-float 11.3s ease-in-out 2.9s infinite alternate,
+    inhabited-moth-twitch 19s steps(1, end) 8s infinite !important;
+}
+
+.hero__ambient-line {
+  min-height: 1.7em;
+  margin-top: -0.15rem !important;
+  color: rgba(192, 140, 255, 0.72) !important;
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 600ms ease,
+    transform 600ms ease;
+}
+
+.hero__ambient-line.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.focus-command-terminal__form input::placeholder {
+  color: rgba(192, 140, 255, 0.5);
+  opacity: 1;
+}
+
+.focus-command-terminal__screen::after {
+  position: absolute;
+  right: 1.1rem;
+  bottom: 0.85rem;
+  width: 0.45rem;
+  height: 0.9rem;
+  background: rgba(244, 240, 255, 0.72);
+  content: "";
+  opacity: 0.25;
+  pointer-events: none;
+  animation: inhabited-idle-cursor 1.25s steps(1, end) 3.1s infinite;
+}
+
+.contact-printer.is-printed .contact-printer__slot::after {
+  opacity: 0.7;
+  animation: inhabited-printer-heartbeat 13s steps(1, end) 5.7s infinite;
+}
+
+.site-footer__cat-process {
+  width: min(var(--container), calc(100% - (var(--space-page) * 2)));
+  margin: 1.15rem auto 0;
+  color: rgba(189, 169, 230, 0.76);
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 1vw, 0.9rem);
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 900ms ease,
+    transform 900ms ease,
+    color 600ms ease;
+}
+
+.site-footer__cat-process.is-online {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.site-footer__cat-process span {
+  margin-right: 0.55rem;
+  color: var(--color-purple-soft);
+  text-shadow: 0 0 12px rgba(157, 77, 255, 0.28);
+}
+
+@keyframes inhabited-terminal-breathe {
+  0%,
+  18%,
+  100% {
+    box-shadow: var(--shadow-brutal);
+  }
+
+  53% {
+    box-shadow:
+      0 0 18px rgba(157, 77, 255, 0.11),
+      var(--shadow-brutal);
+  }
+}
+
+@keyframes inhabited-profile-drift {
+  0%,
+  12% {
+    transform: translate3d(0, 0, 0) rotate(-1.2deg);
+  }
+
+  43% {
+    transform: translate3d(-3px, 2px, 0) rotate(-0.85deg);
+  }
+
+  71% {
+    transform: translate3d(2px, -1px, 0) rotate(-1.05deg);
+  }
+
+  100% {
+    transform: translate3d(-1px, 3px, 0) rotate(-0.7deg);
+  }
+}
+
+@keyframes inhabited-moon-sway {
+  0%,
+  8% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  62% {
+    transform: translate3d(-4px, 3px, 0) rotate(-0.45deg);
+  }
+
+  100% {
+    transform: translate3d(2px, -2px, 0) rotate(0.25deg);
+  }
+}
+
+@keyframes inhabited-moth-twitch {
+  0%,
+  14%,
+  16%,
+  51%,
+  53%,
+  81%,
+  83%,
+  100% {
+    filter:
+      drop-shadow(0 0 20px rgba(157, 77, 255, 0.32))
+      drop-shadow(0 0 48px rgba(157, 77, 255, 0.2));
+  }
+
+  15%,
+  52%,
+  82% {
+    filter:
+      drop-shadow(0 0 30px rgba(192, 140, 255, 0.5))
+      drop-shadow(0 0 64px rgba(157, 77, 255, 0.3));
+  }
+}
+
+@keyframes inhabited-idle-cursor {
+  0%,
+  48% {
+    opacity: 0.18;
+  }
+
+  49%,
+  100% {
+    opacity: 0.62;
+  }
+}
+
+@keyframes inhabited-printer-heartbeat {
+  0%,
+  6%,
+  8%,
+  47%,
+  49%,
+  86%,
+  88%,
+  100% {
+    box-shadow: none;
+    opacity: 0.28;
+  }
+
+  7%,
+  48%,
+  87% {
+    box-shadow: 0 0 14px rgba(192, 140, 255, 0.56);
+    opacity: 0.85;
+  }
+}
+
+@media (max-width: 980px) {
+  .hero__profile-artifact {
+    animation: inhabited-profile-drift-mobile 23s ease-in-out 6.4s infinite alternate !important;
+  }
+}
+
+@keyframes inhabited-profile-drift-mobile {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-1deg);
+  }
+
+  to {
+    transform: translate3d(2px, -2px, 0) rotate(-0.65deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__terminal,
+  .hero__profile-artifact,
+  .hero-ornament--moon,
+  .hero-ornament--moth,
+  .focus-command-terminal__screen::after,
+  .contact-printer.is-printed .contact-printer__slot::after {
+    animation: none !important;
+  }
+
+  .hero__ambient-line {
+    display: none;
+  }
+
+  .site-footer__cat-process {
+    transition: none;
+  }
+}

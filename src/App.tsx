@@ -12,14 +12,6 @@ const navItems = [
   { href: "#contact", label: "~/contact" },
 ];
 
-const timelineItems = [
-  { href: "#top", label: "root", index: "01" },
-  { href: "#focus", label: "focus", index: "02" },
-  { href: "#projects", label: "projects", index: "03" },
-  { href: "#stack", label: "stack", index: "04" },
-  { href: "#contact", label: "contact", index: "05" },
-];
-
 const sectionBridges = {
   focus: {
     index: "01",
@@ -174,25 +166,9 @@ function SectionSequence({ bridge, children }: SectionSequenceProps) {
   );
 }
 
-function SectionTimeline() {
-  return (
-    <nav className="section-timeline" aria-label="Section timeline">
-      <span className="section-timeline__rail" aria-hidden="true" />
-      {timelineItems.map((item) => (
-        <a key={item.href} href={item.href} className="section-timeline__link">
-          <span className="section-timeline__index">{item.index}</span>
-          <span className="section-timeline__label">{item.label}</span>
-        </a>
-      ))}
-    </nav>
-  );
-}
-
 function App() {
   return (
     <div className="app-shell">
-      <SectionTimeline />
-
       <header className="site-header">
         <a
           className="brand-mark brand-mark--moth"
