@@ -2,7 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
+
   workflow_dispatch:
 
 permissions:
@@ -36,6 +38,8 @@ jobs:
 
       - name: Build site
         run: npm run build
+        env:
+          VITE_MORI_GENRE_PROXY_URL: https://mori-music-proxy.denis-krueger-labs.workers.dev
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
