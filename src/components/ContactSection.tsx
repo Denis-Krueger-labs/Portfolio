@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import SectionFrame from "./SectionFrame";
 import wantedPoster from "../assets/contact/wanted-contact-poster.png";
+import NowPlayingFamiliar from "./NowPlayingFamiliar";
 
 const contactLinks = [
   {
@@ -33,14 +34,6 @@ const contactLinks = [
   },
 ];
 
-const footerCatMessages = [
-  "i ate your kernel.",
-  "your C pointers look crunchy.",
-  "grep won\'t save you.",
-  "segmentation fault. skill issue.",
-  "the compiler cried.",
-];
-
 const patchNotesText = String.raw`<!-- appended near end-of-page -->
 
 PORTFOLIO_PATCH_NOTES.md
@@ -65,9 +58,6 @@ function ContactSection() {
   const [isPrinted, setIsPrinted] = useState(false);
   const [hasFooterStarted, setHasFooterStarted] = useState(false);
   const [patchNotesOutput, setPatchNotesOutput] = useState("");
-  const [footerCatMessage, setFooterCatMessage] = useState(
-    footerCatMessages[0],
-  );
 
   useEffect(() => {
     const printerElement = printerRef.current;
@@ -138,55 +128,6 @@ function ContactSection() {
     };
   }, []);
 
-
-  useEffect(() => {
-    if (
-      !hasFooterStarted ||
-      patchNotesOutput.length < patchNotesText.length
-    ) {
-      return;
-    }
-
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    if (motionQuery.matches) {
-      return;
-    }
-
-    let cancelled = false;
-    let timer: number | null = null;
-
-    const scheduleMessage = () => {
-      timer = window.setTimeout(() => {
-        if (cancelled) {
-          return;
-        }
-
-        setFooterCatMessage((currentMessage) => {
-          const availableMessages = footerCatMessages.filter(
-            (message) => message !== currentMessage,
-          );
-
-          return availableMessages[
-            Math.floor(Math.random() * availableMessages.length)
-          ];
-        });
-
-        scheduleMessage();
-      }, 18000 + Math.random() * 26000);
-    };
-
-    scheduleMessage();
-
-    return () => {
-      cancelled = true;
-
-      if (timer !== null) {
-        window.clearTimeout(timer);
-      }
-    };
-  }, [hasFooterStarted, patchNotesOutput.length]);
-
   useEffect(() => {
     if (!hasFooterStarted || patchNotesOutput.length >= patchNotesText.length) {
       return;
@@ -204,7 +145,10 @@ function ContactSection() {
 
         return patchNotesText.slice(
           0,
-          Math.min(currentOutput.length + charactersPerTick, patchNotesText.length),
+          Math.min(
+            currentOutput.length + charactersPerTick,
+            patchNotesText.length,
+          ),
         );
       });
     }, typeSpeedMs);
@@ -272,21 +216,17 @@ function ContactSection() {
               <li key={index}>{String(index + 1).padStart(2, "0")}</li>
             ))}
           </ol>
-          <pre className="site-footer__edit-buffer" aria-label="Portfolio patch notes">{patchNotesOutput}{patchNotesOutput.length < patchNotesText.length ? (
-            <span className="site-footer__cursor" aria-hidden="true" />
-          ) : null}</pre>
+          <pre
+            className="site-footer__edit-buffer"
+            aria-label="Portfolio patch notes"
+          >
+            {patchNotesOutput}
+            {patchNotesOutput.length < patchNotesText.length ? (
+              <span className="site-footer__cursor" aria-hidden="true" />
+            ) : null}
+          </pre>
         </div>
-        <p
-          className={[
-            "site-footer__cat-process",
-            patchNotesOutput.length >= patchNotesText.length && "is-online",
-          ]
-            .filter(Boolean)
-            .join(" ")}
-          aria-live="polite"
-        >
-          <span aria-hidden="true">/•᷅‎‎•᷄\੭</span> {footerCatMessage}
-        </p>
+        <NowPlayingFamiliar />
       </footer>
     </>
   );

@@ -1,0 +1,591 @@
+/*
+ * Mori.exe
+ *
+ * Reuses the portfolio's existing terminal-window chrome.
+ * The additional specificity overrides the older footer-familiar
+ * rules that still exist in the main stylesheet.
+ */
+
+/* --------------------------------------------------------------------------
+   Terminal shell reset
+   -------------------------------------------------------------------------- */
+
+.terminal-window.now-playing-familiar {
+  position: relative;
+  display: block;
+
+  width: min(100%, 27.5rem);
+  margin: 1.25rem auto 0;
+  overflow: hidden;
+
+  border: var(--border-thin);
+  border-radius: var(--radius-none);
+  padding: 0;
+
+  color: var(--color-text);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(157, 77, 255, 0.1),
+      transparent 38%
+    ),
+    rgba(8, 4, 12, 0.92);
+
+  box-shadow: var(--shadow-brutal);
+}
+
+/* Kill the legacy glowing top line. */
+
+.terminal-window.now-playing-familiar::before {
+  display: none;
+  content: none;
+}
+
+/* --------------------------------------------------------------------------
+   Terminal bar
+   -------------------------------------------------------------------------- */
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__bar {
+  display: flex;
+  width: 100%;
+  gap: 0.45rem;
+  align-items: center;
+
+  border-bottom: var(--border-thin);
+  padding: 0.8rem;
+
+  background: rgba(11, 6, 16, 0.7);
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__window-dots {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.45rem;
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__window-dots
+  span {
+  display: block;
+  width: 0.55rem;
+  height: 0.55rem;
+
+  border: 1px solid var(--color-purple-soft);
+  background: var(--color-panel-strong);
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__window-dots
+  span:first-child {
+  border-color: var(--color-accent-soft);
+  background: var(--color-green-soft);
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__title {
+  min-width: 0;
+  margin: 0 0 0 0.15rem;
+
+  overflow: hidden;
+  color: var(--color-muted-strong);
+
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__process-status {
+  margin-left: auto;
+
+  color: var(--color-purple-soft);
+
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.11em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Terminal body
+   -------------------------------------------------------------------------- */
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__body {
+  display: grid;
+  grid-template-columns:
+    minmax(6.75rem, 0.72fr)
+    minmax(0, 1.28fr);
+
+  gap: 0.9rem;
+  align-items: center;
+
+  width: 100%;
+  padding: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Mori
+   -------------------------------------------------------------------------- */
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__mori {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__mori-scale {
+  display: inline-block;
+  width: max-content;
+  margin-bottom: 0.45rem;
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__ascii {
+  display: inline-block;
+  width: max-content;
+  align-self: auto;
+
+  margin: 0;
+  overflow: visible;
+
+  color: var(--color-text);
+
+  font-family:
+    var(--font-mono),
+    "Segoe UI Symbol",
+    monospace;
+
+  font-size: 0.82rem;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+
+  text-shadow:
+    0 0 10px
+    rgba(157, 77, 255, 0.25);
+
+  transform-origin: 48% 70%;
+  will-change: transform;
+}
+
+/* Neutralize the old generic playing animation. */
+
+.terminal-window.now-playing-familiar.now-playing-familiar--playing
+  .now-playing-familiar__ascii {
+  animation: none;
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__judgement {
+  max-width: 9.5rem;
+  margin: 0;
+
+  color: var(--color-muted);
+
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+   Track details
+   -------------------------------------------------------------------------- */
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__details {
+  display: grid;
+  min-width: 0;
+  gap: 0.45rem;
+  align-content: center;
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__details
+  p {
+  display: grid;
+  grid-template-columns:
+    3.2rem
+    minmax(0, 1fr);
+
+  gap: 0.48rem;
+  align-items: baseline;
+
+  min-width: 0;
+  margin: 0;
+
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__details
+  p
+  > span:first-child {
+  color: var(--color-purple-soft);
+
+  font-size: 0.59rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__details
+  strong,
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__details
+  a {
+  min-width: 0;
+  overflow: hidden;
+
+  color: var(--color-muted-strong);
+
+  font-family: var(--font-mono);
+  font-size: 0.69rem;
+  font-weight: 500;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__details
+  a {
+  width: fit-content;
+  max-width: 100%;
+
+  border-bottom:
+    1px dashed
+    rgba(157, 77, 255, 0.38);
+
+  transition:
+    color var(--transition),
+    border-color var(--transition);
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__details
+  a:hover,
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__details
+  a:focus-visible {
+  border-color: var(--color-purple-soft);
+  color: var(--color-text);
+}
+
+/* --------------------------------------------------------------------------
+   Progress
+   -------------------------------------------------------------------------- */
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__progress {
+  display: grid;
+  grid-template-columns:
+    auto
+    minmax(3.8rem, 1fr)
+    auto !important;
+
+  gap: 0.4rem !important;
+  align-items: center;
+
+  margin-top: 0.45rem !important;
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__progress
+  > span:first-child {
+  color: var(--color-purple-soft) !important;
+
+  font-size: 0.62rem;
+  letter-spacing: 0;
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__progress
+  code {
+  min-width: 0;
+  overflow: hidden;
+
+  color: var(--color-purple-soft);
+
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: -0.09em;
+  white-space: nowrap;
+}
+
+.terminal-window.now-playing-familiar
+  .now-playing-familiar__progress
+  small {
+  color: var(--color-muted);
+
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Process state
+   -------------------------------------------------------------------------- */
+
+.terminal-window.now-playing-familiar--playing
+  .now-playing-familiar__process-status {
+  color: var(--color-accent);
+}
+
+.terminal-window.now-playing-familiar--idle
+  .now-playing-familiar__process-status {
+  opacity: 0.68;
+}
+
+.terminal-window.now-playing-familiar--offline
+  .now-playing-familiar__process-status {
+  color: var(--color-muted);
+  opacity: 0.62;
+}
+
+/* --------------------------------------------------------------------------
+   Mori reactions
+   -------------------------------------------------------------------------- */
+
+.terminal-window.now-playing-familiar.now-playing-familiar--motion-headbang
+  .now-playing-familiar__ascii {
+  animation:
+    mori-headbang
+    0.46s
+    ease-in-out
+    infinite;
+}
+
+.terminal-window.now-playing-familiar.now-playing-familiar--motion-pogo
+  .now-playing-familiar__ascii {
+  animation:
+    mori-pogo
+    0.58s
+    ease-in-out
+    infinite;
+}
+
+.terminal-window.now-playing-familiar.now-playing-familiar--motion-bounce
+  .now-playing-familiar__ascii {
+  animation:
+    mori-bounce
+    0.72s
+    ease-in-out
+    infinite;
+}
+
+.terminal-window.now-playing-familiar.now-playing-familiar--motion-nod
+  .now-playing-familiar__ascii {
+  animation:
+    mori-nod
+    0.9s
+    ease-in-out
+    infinite;
+}
+
+.terminal-window.now-playing-familiar.now-playing-familiar--motion-bop
+  .now-playing-familiar__ascii {
+  animation:
+    mori-bop
+    1.15s
+    ease-in-out
+    infinite;
+}
+
+.terminal-window.now-playing-familiar.now-playing-familiar--motion-sway
+  .now-playing-familiar__ascii {
+  animation:
+    mori-sway
+    2.4s
+    ease-in-out
+    infinite;
+}
+
+.terminal-window.now-playing-familiar.now-playing-familiar--motion-float
+  .now-playing-familiar__ascii {
+  animation:
+    mori-float
+    3.2s
+    ease-in-out
+    infinite;
+}
+
+@keyframes mori-headbang {
+  0%,
+  100% {
+    transform:
+      rotate(0deg)
+      translateY(0);
+  }
+
+  25% {
+    transform:
+      rotate(-2deg)
+      translateY(-1px);
+  }
+
+  55% {
+    transform:
+      rotate(4deg)
+      translateY(2px);
+  }
+
+  75% {
+    transform:
+      rotate(1deg)
+      translateY(1px);
+  }
+}
+
+@keyframes mori-pogo {
+  0%,
+  100% {
+    transform:
+      translateY(0)
+      rotate(-1deg);
+  }
+
+  50% {
+    transform:
+      translateY(-4px)
+      rotate(1deg);
+  }
+}
+
+@keyframes mori-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes mori-nod {
+  0%,
+  100% {
+    transform:
+      rotate(0deg)
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      rotate(2deg)
+      translateY(1px);
+  }
+}
+
+@keyframes mori-bop {
+  0%,
+  100% {
+    transform:
+      rotate(-1deg)
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      rotate(1deg)
+      translateY(-1px);
+  }
+}
+
+@keyframes mori-sway {
+  0%,
+  100% {
+    transform:
+      translateX(-2px)
+      rotate(-1deg);
+  }
+
+  50% {
+    transform:
+      translateX(2px)
+      rotate(1deg);
+  }
+}
+
+@keyframes mori-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 520px) {
+  .terminal-window.now-playing-familiar {
+    width: 100%;
+    margin: 1rem 0 0;
+  }
+
+  .terminal-window.now-playing-familiar
+    .now-playing-familiar__body {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+
+    padding: 0.9rem;
+  }
+
+  .terminal-window.now-playing-familiar
+    .now-playing-familiar__mori {
+    padding-bottom: 0.7rem;
+
+    border-bottom:
+      1px solid
+      rgba(157, 77, 255, 0.2);
+  }
+
+  .terminal-window.now-playing-familiar
+    .now-playing-familiar__judgement {
+    max-width: 100%;
+  }
+
+  .terminal-window.now-playing-familiar
+    .now-playing-familiar__process-status {
+    display: none;
+  }
+
+  .terminal-window.now-playing-familiar
+    .now-playing-familiar__progress {
+    grid-template-columns:
+      auto
+      minmax(0, 1fr)
+      auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .terminal-window.now-playing-familiar
+    .now-playing-familiar__ascii {
+    animation: none !important;
+  }
+}
