@@ -153,7 +153,7 @@ function getMoriMessage(
       return "consulting forbidden metadata...";
     }
 
-    return "tail.exe keeping rhythm";
+    return "tail.sh keeping rhythm";
   }
 
   if (playerStatus === "loading") {
@@ -457,22 +457,24 @@ function NowPlayingFamiliar() {
       aria-live="polite"
     >
       <div className="terminal-window__bar now-playing-familiar__bar">
-        <div
-          className="now-playing-familiar__window-dots"
-          aria-hidden="true"
-        >
-          <span />
-          <span />
-          <span />
-        </div>
-
         <p className="now-playing-familiar__title">
-          Mori.exe
+          mori.sh
         </p>
 
-        <small className="now-playing-familiar__process-status">
-          {processStatus}
-        </small>
+        <div className="now-playing-familiar__bar-right">
+          <small className="now-playing-familiar__process-status">
+            {processStatus}
+          </small>
+
+          <div
+            className="now-playing-familiar__window-dots"
+            aria-hidden="true"
+          >
+            <span />
+            <span />
+            <span />
+          </div>
+        </div>
       </div>
 
       <div className="terminal-window__body now-playing-familiar__body">
