@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import ContactSection from "./components/ContactSection";
+import CredentialsSection from "./components/CredentialsSection";
 import FocusSection from "./components/FocusSection";
 import Hero from "./components/Hero";
 import ProjectGrid from "./components/ProjectGrid";
@@ -9,6 +10,7 @@ const navItems = [
   { href: "#focus", label: "~/focus" },
   { href: "#projects", label: "~/projects" },
   { href: "#stack", label: "~/stack" },
+  { href: "#credentials", label: "~/credentials" },
   { href: "#contact", label: "~/contact" },
 ];
 
@@ -31,9 +33,15 @@ const sectionBridges = {
     command: "load ./stack/tool-deck",
     result: "tool deck loaded",
   },
-  contact: {
+  credentials: {
     index: "04",
     path: "~/portfolio/stack",
+    command: "verify ./credentials/*.crt",
+    result: "credential chain valid",
+  },
+  contact: {
+    index: "05",
+    path: "~/portfolio/credentials",
     command: "spool ./contact/wanted_notice.print",
     result: "contact channel queued",
   },
@@ -197,6 +205,9 @@ function App() {
         </SectionSequence>
         <SectionSequence bridge={sectionBridges.stack}>
           <StackSection />
+        </SectionSequence>
+        <SectionSequence bridge={sectionBridges.credentials}>
+          <CredentialsSection />
         </SectionSequence>
         <SectionSequence bridge={sectionBridges.contact}>
           <ContactSection />

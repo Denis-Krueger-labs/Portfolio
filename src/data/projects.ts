@@ -39,6 +39,14 @@ export const featuredProjects: Project[] = [
     featured: true,
     href: "https://github.com/Denis-Krueger-labs/llm-prompt-injection-paper",
   },
+  {
+    title: "Copy Fail / MORI",
+    description:
+      "Controlled research on CVE-2026-31431, from vulnerable-kernel reproduction to MORI detection, eBPF/LSM enforcement, regression testing, and vendor-patch validation.",
+    tags: ["CVE", "Linux Kernel", "eBPF", "MORI"],
+    featured: true,
+    href: "https://github.com/Denis-Krueger-labs/copy-fail-lab",
+  }
 ];
 
 export const fixDeskProject: Project = {
