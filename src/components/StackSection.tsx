@@ -1,272 +1,545 @@
-import { useEffect, useRef, useState } from "react";
-import { stackGroups } from "../data/stack";
+import {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import {
+  stackCategories,
+  stackEvidence,
+  stackTechnologies,
+  type StackCategoryId,
+  type StackEvidence,
+  type StackTechnology,
+} from "../data/stack";
 import SectionFrame from "./SectionFrame";
+import "./StackEvidenceMatrix.css";
 
+type Selection =
+  | { type: "technology"; id: string }
+  | { type: "evidence"; id: string };
 
-import pythonCard from "../assets/stack/cards/Python.png";
-import cCard from "../assets/stack/cards/C.png";
-import cSharpCard from "../assets/stack/cards/C-Sharp.png";
-import bashCard from "../assets/stack/cards/Bash.png";
-import javaCard from "../assets/stack/cards/Java.png";
-import sqlCard from "../assets/stack/cards/SQL.png";
-import typeScriptCard from "../assets/stack/cards/TypeScript.png";
-
-import kaliCard from "../assets/stack/cards/Kali.png";
-import burpSuiteCard from "../assets/stack/cards/BurpSuite.png";
-import nmapCard from "../assets/stack/cards/Nmap.png";
-import gobusterCard from "../assets/stack/cards/Gobuster.png";
-import ffufCard from "../assets/stack/cards/ffuf.png";
-import sqlMapCard from "../assets/stack/cards/SQL-Map.png";
-import metasploitCard from "../assets/stack/cards/Metasploit.png";
-import wiresharkCard from "../assets/stack/cards/Wire-Shark.png";
-import owaspZapCard from "../assets/stack/cards/OWASP-Zap.png";
-import yaraCard from "../assets/stack/cards/Yara.png";
-
-import linuxCard from "../assets/stack/cards/Linux.png";
-import windowsCard from "../assets/stack/cards/Windows.png";
-import gitCard from "../assets/stack/cards/git.png";
-import dockerCard from "../assets/stack/cards/docker.png";
-import dotNetCard from "../assets/stack/cards/DotNet.png";
-import aspNetCoreCard from "../assets/stack/cards/Dot-Net-ASP.png";
-import ciCdCard from "../assets/stack/cards/CI-CD.png";
-import reactCard from "../assets/stack/cards/React.png";
-import viteCard from "../assets/stack/cards/Vite.png";
-
-const stackGroupLabels: Record<string, string> = {
-  Languages: "Languages",
-  "Security tools": "Security Tools",
-  "Systems and development": "Systems & Development",
+type ConnectionLine = {
+  id: string;
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
 };
 
-const defaultStackGroup = stackGroups[0]?.title ?? "Languages";
-const stackTransitionMs = 1000;
-
-type StackDeckPhase = "active" | "incoming" | "outgoing";
-
-const normalizeStackItem = (item: string) =>
-  item
-    .toLowerCase()
-    .replace(/#/g, "sharp")
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]/g, "");
-
-const stackCardImages: Record<string, string> = {
-  python: pythonCard,
-  c: cCard,
-  csharp: cSharpCard,
-  bash: bashCard,
-  java: javaCard,
-  sql: sqlCard,
-  typescript: typeScriptCard,
-
-  kali: kaliCard,
-  kalilinux: kaliCard,
-  burpsuite: burpSuiteCard,
-  nmap: nmapCard,
-  gobuster: gobusterCard,
-  ffuf: ffufCard,
-  sqlmap: sqlMapCard,
-  metasploit: metasploitCard,
-  wireshark: wiresharkCard,
-  owaspzap: owaspZapCard,
-  yara: yaraCard,
-
-  linux: linuxCard,
-  windows: windowsCard,
-  git: gitCard,
-  docker: dockerCard,
-  net: dotNetCard,
-  dotnet: dotNetCard,
-  aspnetcore: aspNetCoreCard,
-  gitlabci: ciCdCard,
-  cicd: ciCdCard,
-  gitlabcicd: ciCdCard,
-  react: reactCard,
-  vite: viteCard,
+const defaultCategory: StackCategoryId = "security";
+const defaultSelection: Selection = {
+  type: "technology",
+  id: "ebpf",
 };
 
-const getStackCardImage = (item: string) =>
-  stackCardImages[normalizeStackItem(item)];
+function getTechnology(id: string): StackTechnology | undefined {
+  return stackTechnologies.find((technology) => technology.id === id);
+}
+
+function getEvidence(id: string): StackEvidence | undefined {
+  return stackEvidence.find((evidence) => evidence.id === id);
+}
 
 function StackSection() {
-  const [selectedStackGroup, setSelectedStackGroup] =
-    useState(defaultStackGroup);
-  const [visibleStackGroup, setVisibleStackGroup] =
-    useState(defaultStackGroup);
-  const [incomingStackGroup, setIncomingStackGroup] = useState<string | null>(
-    null,
+  const [activeCategory, setActiveCategory] =
+    useState<StackCategoryId>(defaultCategory);
+  const [selection, setSelection] = useState<Selection>(defaultSelection);
+  const [hoverSelection, setHoverSelection] = useState<Selection | null>(null);
+  const [lines, setLines] = useState<ConnectionLine[]>([]);
+
+  const boardRef = useRef<HTMLDivElement | null>(null);
+  const technologyRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const evidenceRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+  const visibleTechnologies = useMemo(
+    () =>
+      stackTechnologies.filter(
+        (technology) => technology.category === activeCategory,
+      ),
+    [activeCategory],
   );
-  const [isAnimating, setIsAnimating] = useState(false);
-  const prefersReducedMotion = useRef(false);
-  const transitionTimer = useRef<number | null>(null);
+
+  const visualSelection = hoverSelection ?? selection;
+
+  const selectedTechnology =
+    selection.type === "technology" ? getTechnology(selection.id) : undefined;
+  const selectedEvidence =
+    selection.type === "evidence" ? getEvidence(selection.id) : undefined;
+
+  const relatedTechnologyIds = useMemo(() => {
+    if (visualSelection.type === "technology") {
+      return new Set([visualSelection.id]);
+    }
+
+    return new Set(
+      stackTechnologies
+        .filter((technology) =>
+          technology.evidence.includes(visualSelection.id),
+        )
+        .map((technology) => technology.id),
+    );
+  }, [visualSelection]);
+
+  const relatedEvidenceIds = useMemo(() => {
+    if (visualSelection.type === "evidence") {
+      return new Set([visualSelection.id]);
+    }
+
+    return new Set(getTechnology(visualSelection.id)?.evidence ?? []);
+  }, [visualSelection]);
+
+  const updateLines = () => {
+    const board = boardRef.current;
+
+    if (!board) {
+      setLines([]);
+      return;
+    }
+
+    const boardRect = board.getBoundingClientRect();
+    const nextLines: ConnectionLine[] = [];
+
+    if (visualSelection.type === "technology") {
+      const technologyNode = technologyRefs.current[visualSelection.id];
+
+      if (!technologyNode) {
+        setLines([]);
+        return;
+      }
+
+      const sourceRect = technologyNode.getBoundingClientRect();
+
+      for (const evidenceId of relatedEvidenceIds) {
+        const evidenceNode = evidenceRefs.current[evidenceId];
+
+        if (!evidenceNode) {
+          continue;
+        }
+
+        const targetRect = evidenceNode.getBoundingClientRect();
+
+        nextLines.push({
+          id: `${visualSelection.id}-${evidenceId}`,
+          x1: sourceRect.right - boardRect.left,
+          y1: sourceRect.top + sourceRect.height / 2 - boardRect.top,
+          x2: targetRect.left - boardRect.left,
+          y2: targetRect.top + targetRect.height / 2 - boardRect.top,
+        });
+      }
+    } else {
+      const evidenceNode = evidenceRefs.current[visualSelection.id];
+
+      if (!evidenceNode) {
+        setLines([]);
+        return;
+      }
+
+      const targetRect = evidenceNode.getBoundingClientRect();
+
+      for (const technologyId of relatedTechnologyIds) {
+        const technologyNode = technologyRefs.current[technologyId];
+
+        if (!technologyNode) {
+          continue;
+        }
+
+        const sourceRect = technologyNode.getBoundingClientRect();
+
+        nextLines.push({
+          id: `${technologyId}-${visualSelection.id}`,
+          x1: sourceRect.right - boardRect.left,
+          y1: sourceRect.top + sourceRect.height / 2 - boardRect.top,
+          x2: targetRect.left - boardRect.left,
+          y2: targetRect.top + targetRect.height / 2 - boardRect.top,
+        });
+      }
+    }
+
+    setLines(nextLines);
+  };
+
+  useLayoutEffect(() => {
+    updateLines();
+  }, [activeCategory, visualSelection, visibleTechnologies.length]);
 
   useEffect(() => {
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updateMotionPreference = () => {
-      prefersReducedMotion.current = motionQuery.matches;
+    const board = boardRef.current;
+
+    if (!board) {
+      return undefined;
+    }
+
+    const handleResize = () => {
+      window.requestAnimationFrame(updateLines);
     };
 
-    updateMotionPreference();
-    motionQuery.addEventListener("change", updateMotionPreference);
+    const observer = new ResizeObserver(handleResize);
+    observer.observe(board);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      motionQuery.removeEventListener("change", updateMotionPreference);
-
-      if (transitionTimer.current !== null) {
-        window.clearTimeout(transitionTimer.current);
-      }
+      observer.disconnect();
+      window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [visualSelection, activeCategory]);
 
-  const getStackGroup = (groupTitle: string) =>
-    stackGroups.find((group) => group.title === groupTitle) ?? stackGroups[0];
+  const handleCategorySelect = (categoryId: StackCategoryId) => {
+    setActiveCategory(categoryId);
+    setHoverSelection(null);
 
-  const selectedStackGroupData = getStackGroup(selectedStackGroup);
-  const visibleStackGroupData = getStackGroup(visibleStackGroup);
-  const incomingStackGroupData = incomingStackGroup
-    ? getStackGroup(incomingStackGroup)
-    : null;
-  const selectedStackGroupLabel =
-    stackGroupLabels[selectedStackGroupData.title] ??
-    selectedStackGroupData.title;
+    const firstTechnology = stackTechnologies.find(
+      (technology) => technology.category === categoryId,
+    );
 
-  const renderedStackDecks: Array<{
-    group: (typeof stackGroups)[number];
-    phase: StackDeckPhase;
-  }> = [
-    {
-      group: visibleStackGroupData,
-      phase: isAnimating ? "outgoing" : "active",
-    },
-  ];
-
-  if (incomingStackGroupData) {
-    renderedStackDecks.push({
-      group: incomingStackGroupData,
-      phase: "incoming",
-    });
-  }
-
-  const handleStackGroupSelect = (groupTitle: string) => {
-    if (isAnimating || groupTitle === selectedStackGroup) {
-      return;
+    if (firstTechnology) {
+      setSelection({
+        type: "technology",
+        id: firstTechnology.id,
+      });
     }
-
-    setSelectedStackGroup(groupTitle);
-
-    if (prefersReducedMotion.current) {
-      setVisibleStackGroup(groupTitle);
-      setIncomingStackGroup(null);
-      setIsAnimating(false);
-      return;
-    }
-
-    setIncomingStackGroup(groupTitle);
-    setIsAnimating(true);
-
-    if (transitionTimer.current !== null) {
-      window.clearTimeout(transitionTimer.current);
-    }
-
-    transitionTimer.current = window.setTimeout(() => {
-      setVisibleStackGroup(groupTitle);
-      setIncomingStackGroup(null);
-      setIsAnimating(false);
-      transitionTimer.current = null;
-    }, stackTransitionMs);
   };
+
+  const handleTechnologySelect = (technology: StackTechnology) => {
+    setActiveCategory(technology.category);
+    setSelection({
+      type: "technology",
+      id: technology.id,
+    });
+  };
+
+  const handleEvidenceSelect = (evidence: StackEvidence) => {
+    setSelection({
+      type: "evidence",
+      id: evidence.id,
+    });
+  };
+
+  const inspectedTechnology =
+    selectedTechnology ??
+    (selectedEvidence ? undefined : getTechnology(defaultSelection.id));
 
   return (
     <SectionFrame
       id="stack"
       className="stack-section"
-      label="STACK -- TOOLS AND SYNTAX"
+      label="STACK -- EVIDENCE MATRIX"
       title="STACK"
     >
-      <div className="stack-loadout">
-        <div
-          className="stack-selector"
-          role="tablist"
-          aria-label="Stack categories"
-        >
-          {stackGroups.map((group) => {
-            const groupLabel = stackGroupLabels[group.title] ?? group.title;
-            const isSelected = group.title === selectedStackGroup;
+      <div className="evidence-stack">
+        <div className="evidence-stack__toolbar">
+          <div
+            className="evidence-stack__categories"
+            role="tablist"
+            aria-label="Technology categories"
+          >
+            {stackCategories.map((category) => {
+              const isActive = activeCategory === category.id;
+              const count = stackTechnologies.filter(
+                (technology) => technology.category === category.id,
+              ).length;
 
-            return (
-              <button
-                className={[
-                  "stack-selector__button",
-                  isSelected && "stack-selector__button--active",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                type="button"
-                key={group.title}
-                role="tab"
-                aria-selected={isSelected}
-                aria-pressed={isSelected}
-                disabled={isAnimating}
-                onClick={() => handleStackGroupSelect(group.title)}
-              >
-                {groupLabel}
-              </button>
-            );
-          })}
+              return (
+                <button
+                  key={category.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  className={[
+                    "evidence-stack__category",
+                    isActive && "is-active",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  onClick={() => handleCategorySelect(category.id)}
+                >
+                  <span>{category.shortLabel}</span>
+                  <strong>{category.label}</strong>
+                  <small>{String(count).padStart(2, "0")}</small>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="evidence-stack__command" aria-hidden="true">
+            <span>0N1S3C@stack:~$</span>
+            <code>trace {activeCategory} --evidence</code>
+          </div>
         </div>
 
-        <p className="stack-active-label">
-          <span>Active deck:</span> {selectedStackGroupLabel}
-        </p>
+        <div className="evidence-stack__layout">
+          <div
+            ref={boardRef}
+            className="evidence-stack__board"
+            aria-label="Interactive technology evidence map"
+          >
+            <svg
+              className="evidence-stack__wires"
+              aria-hidden="true"
+              width="100%"
+              height="100%"
+            >
+              {lines.map((line) => {
+                const controlOffset = Math.max(
+                  46,
+                  Math.abs(line.x2 - line.x1) * 0.38,
+                );
+                const path = [
+                  `M ${line.x1} ${line.y1}`,
+                  `C ${line.x1 + controlOffset} ${line.y1},`,
+                  `${line.x2 - controlOffset} ${line.y2},`,
+                  `${line.x2} ${line.y2}`,
+                ].join(" ");
 
-        <div className="stack-grid">
-          {renderedStackDecks.map(({ group, phase }) => {
-            const groupLabel = stackGroupLabels[group.title] ?? group.title;
-            const isActiveDeck = phase === "active";
+                return (
+                  <path
+                    key={line.id}
+                    d={path}
+                    className="evidence-stack__wire"
+                  />
+                );
+              })}
+            </svg>
 
-            return (
-              <article
-                className={`stack-deck stack-deck--${phase}`}
-                key={`${group.title}-${phase}`}
-                role="tabpanel"
-                aria-hidden={!isActiveDeck}
-                aria-label={`${groupLabel} stack`}
+            <div className="evidence-stack__tech-pane">
+              <div className="evidence-stack__pane-heading">
+                <span>toolchain.nodes</span>
+                <small>
+                  {String(visibleTechnologies.length).padStart(2, "0")} loaded
+                </small>
+              </div>
+
+              <div
+                className="evidence-stack__tech-list"
+                role="list"
+                aria-label={`${activeCategory} technologies`}
               >
-                <h3>{groupLabel}</h3>
+                {visibleTechnologies.map((technology, index) => {
+                  const isFocus =
+                    visualSelection.type === "technology" &&
+                    visualSelection.id === technology.id;
+                  const isRelated = relatedTechnologyIds.has(technology.id);
+                  const shouldDim =
+                    visualSelection.type === "evidence" && !isRelated;
 
-                <ul
-                  className="chip-list stack-deck__cards"
-                  aria-label={`${groupLabel} cards`}
+                  return (
+                    <button
+                      key={technology.id}
+                      ref={(node: HTMLButtonElement | null) => {
+                        technologyRefs.current[technology.id] = node;
+                      }}
+                      type="button"
+                      role="listitem"
+                      className={[
+                        "evidence-stack__tech-node",
+                        isFocus && "is-focus",
+                        isRelated && "is-related",
+                        shouldDim && "is-dimmed",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                      onClick={() => handleTechnologySelect(technology)}
+                      onMouseEnter={() =>
+                        setHoverSelection({
+                          type: "technology",
+                          id: technology.id,
+                        })
+                      }
+                      onMouseLeave={() => setHoverSelection(null)}
+                      onFocus={() =>
+                        setHoverSelection({
+                          type: "technology",
+                          id: technology.id,
+                        })
+                      }
+                      onBlur={() => setHoverSelection(null)}
+                    >
+                      <span className="evidence-stack__node-index">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <strong>{technology.label}</strong>
+                      <small>
+                        {technology.evidence.length > 0
+                          ? `${technology.evidence.length} linked`
+                          : "unlinked"}
+                      </small>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="evidence-stack__evidence-pane">
+              <div className="evidence-stack__pane-heading">
+                <span>evidence.targets</span>
+                <small>
+                  {String(stackEvidence.length).padStart(2, "0")} indexed
+                </small>
+              </div>
+
+              <div className="evidence-stack__evidence-list">
+                {stackEvidence.map((evidence, index) => {
+                  const isFocus =
+                    visualSelection.type === "evidence" &&
+                    visualSelection.id === evidence.id;
+                  const isRelated = relatedEvidenceIds.has(evidence.id);
+                  const shouldDim =
+                    visualSelection.type === "technology" && !isRelated;
+
+                  return (
+                    <button
+                      key={evidence.id}
+                      ref={(node: HTMLButtonElement | null) => {
+                        evidenceRefs.current[evidence.id] = node;
+                      }}
+                      type="button"
+                      className={[
+                        "evidence-stack__evidence-node",
+                        isFocus && "is-focus",
+                        isRelated && "is-related",
+                        shouldDim && "is-dimmed",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                      onClick={() => handleEvidenceSelect(evidence)}
+                      onMouseEnter={() =>
+                        setHoverSelection({
+                          type: "evidence",
+                          id: evidence.id,
+                        })
+                      }
+                      onMouseLeave={() => setHoverSelection(null)}
+                      onFocus={() =>
+                        setHoverSelection({
+                          type: "evidence",
+                          id: evidence.id,
+                        })
+                      }
+                      onBlur={() => setHoverSelection(null)}
+                    >
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                      <div>
+                        <strong>{evidence.label}</strong>
+                        <small>{evidence.kind}</small>
+                      </div>
+                      <b aria-hidden="true">↗</b>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <aside className="evidence-stack__inspector" aria-live="polite">
+            {inspectedTechnology ? (
+              <>
+                <div className="evidence-stack__inspector-path">
+                  inspect://technology/{inspectedTechnology.id}
+                </div>
+                <p className="evidence-stack__inspector-kicker">
+                  {
+                    stackCategories.find(
+                      (category) =>
+                        category.id === inspectedTechnology.category,
+                    )?.label
+                  }
+                </p>
+                <h3>{inspectedTechnology.label}</h3>
+                <p className="evidence-stack__inspector-summary">
+                  {inspectedTechnology.summary}
+                </p>
+
+                <div className="evidence-stack__inspector-block">
+                  <span>observed work</span>
+                  <ul>
+                    {inspectedTechnology.work.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="evidence-stack__inspector-block">
+                  <span>used in</span>
+                  {inspectedTechnology.evidence.length > 0 ? (
+                    <div className="evidence-stack__inspector-evidence">
+                      {inspectedTechnology.evidence.map((evidenceId) => {
+                        const evidence = getEvidence(evidenceId);
+
+                        if (!evidence) {
+                          return null;
+                        }
+
+                        return (
+                          <button
+                            key={evidence.id}
+                            type="button"
+                            onClick={() => handleEvidenceSelect(evidence)}
+                          >
+                            <strong>{evidence.label}</strong>
+                            <small>{evidence.kind}</small>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p className="evidence-stack__unlinked">
+                      No public flagship artifact linked. Kept visible as
+                      documented coursework / prior experience.
+                    </p>
+                  )}
+                </div>
+              </>
+            ) : null}
+
+            {selectedEvidence ? (
+              <>
+                <div className="evidence-stack__inspector-path">
+                  inspect://evidence/{selectedEvidence.id}
+                </div>
+                <p className="evidence-stack__inspector-kicker">
+                  {selectedEvidence.kind}
+                </p>
+                <h3>{selectedEvidence.label}</h3>
+                <p className="evidence-stack__inspector-summary">
+                  {selectedEvidence.summary}
+                </p>
+
+                <div className="evidence-stack__inspector-block">
+                  <span>linked technologies</span>
+                  <div className="evidence-stack__technology-links">
+                    {stackTechnologies
+                      .filter((technology) =>
+                        technology.evidence.includes(selectedEvidence.id),
+                      )
+                      .map((technology) => (
+                        <button
+                          key={technology.id}
+                          type="button"
+                          onClick={() => handleTechnologySelect(technology)}
+                        >
+                          {technology.label}
+                        </button>
+                      ))}
+                  </div>
+                </div>
+
+                <a
+                  className="evidence-stack__open-evidence"
+                  href={selectedEvidence.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  {group.items.map((item) => {
-                    const cardImage = getStackCardImage(item);
+                  open evidence ↗
+                </a>
+              </>
+            ) : null}
 
-                    return (
-                      <li
-                        className="stack-tech-card"
-                        key={item}
-                        tabIndex={isActiveDeck ? 0 : -1}
-                        aria-label={item}
-                      >
-                        {cardImage ? (
-                          <img
-                            className="stack-tech-card__image"
-                            src={cardImage}
-                            alt=""
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <span className="stack-tech-card__fallback">
-                            {item}
-                          </span>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </article>
-            );
-          })}
+            <div className="evidence-stack__inspector-footer" aria-hidden="true">
+              <span>evidence over percentages</span>
+              <span>no proficiency bars detected</span>
+            </div>
+          </aside>
         </div>
       </div>
     </SectionFrame>

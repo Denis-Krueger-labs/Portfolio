@@ -3,12 +3,14 @@ import ContactSection from "./components/ContactSection";
 import CredentialsSection from "./components/CredentialsSection";
 import FocusSection from "./components/FocusSection";
 import Hero from "./components/Hero";
+import HomeLabSection from "./components/HomeLabSection";
 import ProjectGrid from "./components/ProjectGrid";
 import StackSection from "./components/StackSection";
 
 const navItems = [
   { href: "#focus", label: "~/focus" },
   { href: "#projects", label: "~/projects" },
+  { href: "#lab", label: "~/lab" },
   { href: "#stack", label: "~/stack" },
   { href: "#credentials", label: "~/credentials" },
   { href: "#contact", label: "~/contact" },
@@ -27,20 +29,26 @@ const sectionBridges = {
     command: "grep -r \"evidence\" ../projects",
     result: "opening project archive",
   },
-  stack: {
+  lab: {
     index: "03",
     path: "~/portfolio/projects",
+    command: "probe ./lab/heartbeat && map ./lab/nodes",
+    result: "home lab console mounted",
+  },
+  stack: {
+    index: "04",
+    path: "~/portfolio/lab",
     command: "load ./stack/tool-deck",
     result: "tool deck loaded",
   },
   credentials: {
-    index: "04",
+    index: "05",
     path: "~/portfolio/stack",
     command: "verify ./credentials/*.crt",
     result: "credential chain valid",
   },
   contact: {
-    index: "05",
+    index: "06",
     path: "~/portfolio/credentials",
     command: "spool ./contact/wanted_notice.print",
     result: "contact channel queued",
@@ -106,7 +114,10 @@ function SectionSequence({ bridge, children }: SectionSequenceProps) {
   const sequenceRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const commandDurationMs = Math.min(2200, Math.max(1150, bridge.command.length * 54));
+  const commandDurationMs = Math.min(
+    2200,
+    Math.max(1150, bridge.command.length * 54),
+  );
 
   useEffect(() => {
     const sequence = sequenceRef.current;
@@ -202,6 +213,9 @@ function App() {
         </SectionSequence>
         <SectionSequence bridge={sectionBridges.projects}>
           <ProjectGrid />
+        </SectionSequence>
+        <SectionSequence bridge={sectionBridges.lab}>
+          <HomeLabSection />
         </SectionSequence>
         <SectionSequence bridge={sectionBridges.stack}>
           <StackSection />
