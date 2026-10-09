@@ -17,4 +17,4 @@ npm run build
 ```
 
 Current Status:
-Homlab has no heartbeat  yet
+Homelab has no heartbeat  yet
